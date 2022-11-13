@@ -15,7 +15,6 @@ import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import PauseCircleIcon from "@mui/icons-material/PauseCircle";
 import VolumeUpRounded from "@mui/icons-material/VolumeUpRounded";
 import VolumeDownRounded from "@mui/icons-material/VolumeDownRounded";
-import ToggleButton from "@mui/material/ToggleButton";
 
 const TinyText = styled(Typography)({
   fontSize: "0.75rem",
