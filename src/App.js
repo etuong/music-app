@@ -14,7 +14,7 @@ function App() {
   return (
     <MainContainer>
       <Playlist />
-      <Stack sx={{ width: "100%", marginLeft: "10px" }}>
+      <Stack sx={{ width: "100%", marginLeft: "10px"}}>
         <Controls />
         <Songs />
       </Stack>

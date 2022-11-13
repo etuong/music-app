@@ -32,17 +32,24 @@ const Controls = () => {
   const [duration, setDuration] = React.useState(0);
 
   const audioPlayer = React.useRef();
-  const animationRef = React.useRef();
 
   React.useEffect(() => {
-    const getTrackLength = (track) => {
+    const subscribeTrackEvents = (track) => {
       track.addEventListener("loadedmetadata", function () {
         setDuration(track.duration);
         track.volume = volume;
       });
+
+      track.addEventListener("timeupdate", function () {
+        setPosition(track.currentTime);
+      });
+
+      track.addEventListener("ended", function () {
+        // alert("END");
+      });
     };
 
-    getTrackLength(audioPlayer.current);
+    subscribeTrackEvents(audioPlayer.current);
   }, []);
 
   const formatDuration = (secs) => {
@@ -56,18 +63,7 @@ const Controls = () => {
   const togglePlayPause = () => {
     const prevValue = isPlaying;
     setIsPlaying(!prevValue);
-    if (!prevValue) {
-      audioPlayer.current.play();
-      animationRef.current = requestAnimationFrame(whilePlaying);
-    } else {
-      audioPlayer.current.pause();
-      cancelAnimationFrame(animationRef.current);
-    }
-  };
-
-  const whilePlaying = () => {
-    setPosition(audioPlayer.current.currentTime);
-    animationRef.current = requestAnimationFrame(whilePlaying);
+    !prevValue ? audioPlayer.current.play() : audioPlayer.current.pause();
   };
 
   return (
@@ -133,14 +129,14 @@ const Controls = () => {
         <Stack
           spacing={2}
           direction="row"
-          sx={{ mb: 1, px: 1, width: "200px" }}
+          sx={{ mb: 1, px: 1, width: "230px" }}
           alignItems="center"
         >
           <IconButton
             onClick={() => {
               setVolume((oldVolume) => {
                 const newVolume = oldVolume - 0.1;
-                if (newVolume === 0) return oldVolume;
+                if (newVolume < 0) return oldVolume;
                 audioPlayer.current.volume = newVolume;
                 return newVolume;
               });
@@ -153,7 +149,10 @@ const Controls = () => {
             value={volume}
             max={1}
             step={0.1}
-            onChange={(_, value) => setVolume(value)}
+            onChange={(_, value) => {
+              audioPlayer.current.volume = value;
+              setVolume(value);
+            }}
             sx={{
               color: "rgba(0,0,0,0.87)",
               "& .MuiSlider-track": {
@@ -176,7 +175,7 @@ const Controls = () => {
             onClick={() => {
               setVolume((oldVolume) => {
                 const newVolume = oldVolume + 0.1;
-                if (newVolume === 1) return oldVolume;
+                if (newVolume > 1) return oldVolume;
                 audioPlayer.current.volume = newVolume;
                 return newVolume;
               });
@@ -201,6 +200,7 @@ const Controls = () => {
           height: 6,
           color: "#3F7089",
           "& .MuiSlider-thumb": {
+            transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
             "&:before": {
               boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
             },
