@@ -32,17 +32,37 @@ const categories = [
 ];
 
 const Playlist = () => {
+  const [selectedIndex, setSelectedIndex] = React.useState(2);
+
   return (
-    <Box sx={{ minWidth: 250 }}>
+    <Box sx={{ minWidth: 250, overflow: "auto", height: "100%" }}>
       <Title>Ethan's Playlists</Title>
       <Divider />
       <nav aria-label="main mailbox folders">
-        <List>
+        <List
+          sx={{
+            "&& .Mui-selected, && .Mui-selected:hover": {
+              bgcolor: "#3F7089",
+              "&, & .MuiListItemIcon-root": {
+                color: "white",
+              },
+            },
+            "& .MuiListItemButton-root:hover": {
+              bgcolor: "transparent",
+              "&, & .MuiListItemIcon-root": {
+                color: "#3F7089",
+              },
+            },
+          }}
+        >
           {categories.map((category, index) => (
             <ListItem disablePadding key={index}>
-              <ListItemButton>
+              <ListItemButton
+                selected={selectedIndex === index}
+                onClick={(_event) => setSelectedIndex(index)}
+              >
                 <ListItemIcon>
-                  <Folder />
+                  {selectedIndex === index ? <FolderOpen /> : <Folder />}
                 </ListItemIcon>
                 <ListItemText primary={category.name} />
               </ListItemButton>
