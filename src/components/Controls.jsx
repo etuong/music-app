@@ -24,21 +24,60 @@ const TinyText = styled(Typography)({
 });
 
 const Controls = () => {
-  const duration = 200;
-  const [position, setPosition] = React.useState(32);
+  const [position, setPosition] = React.useState(0);
   const [volume, setVolume] = React.useState(0.5);
-  const [paused, setPaused] = React.useState(false);
+  const [isPlaying, setIsPlaying] = React.useState(false);
   const [repeatOne, setRepeatOne] = React.useState(false);
   const [shuffle, setShuffle] = React.useState(false);
+  const [duration, setDuration] = React.useState(0);
 
-  function formatDuration(value) {
-    const minute = Math.floor(value / 60);
-    const secondLeft = value - minute * 60;
-    return `${minute}:${secondLeft < 10 ? `0${secondLeft}` : secondLeft}`;
-  }
+  const audioPlayer = React.useRef();
+  const animationRef = React.useRef();
+
+  React.useEffect(() => {
+    const getTrackLength = (track) => {
+      track.addEventListener("loadedmetadata", function () {
+        setDuration(track.duration);
+        track.volume = volume;
+      });
+    };
+
+    getTrackLength(audioPlayer.current);
+  }, []);
+
+  const formatDuration = (secs) => {
+    const minutes = Math.floor(secs / 60);
+    const returnedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
+    const seconds = Math.floor(secs % 60);
+    const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
+    return `${returnedMinutes}:${returnedSeconds}`;
+  };
+
+  const togglePlayPause = () => {
+    const prevValue = isPlaying;
+    setIsPlaying(!prevValue);
+    if (!prevValue) {
+      audioPlayer.current.play();
+      animationRef.current = requestAnimationFrame(whilePlaying);
+    } else {
+      audioPlayer.current.pause();
+      cancelAnimationFrame(animationRef.current);
+    }
+  };
+
+  const whilePlaying = () => {
+    setPosition(audioPlayer.current.currentTime);
+    animationRef.current = requestAnimationFrame(whilePlaying);
+  };
 
   return (
     <Box>
+      <audio
+        ref={audioPlayer}
+        src="https://dfalmen8fy7vv.cloudfront.net/Love+Songs/Come+Sail+Away.mp3"
+        preload="metadata"
+      ></audio>
+
       <Box
         sx={{
           display: "flex",
@@ -68,13 +107,13 @@ const Controls = () => {
           </IconButton>
 
           <IconButton
-            aria-label={paused ? "play" : "pause"}
-            onClick={() => setPaused(!paused)}
+            aria-label={isPlaying ? "play" : "pause"}
+            onClick={() => togglePlayPause()}
           >
-            {paused ? (
-              <PlayCircleIcon sx={{ fontSize: "3rem" }} htmlColor="#000" />
-            ) : (
+            {isPlaying ? (
               <PauseCircleIcon sx={{ fontSize: "3rem" }} htmlColor="#000" />
+            ) : (
+              <PlayCircleIcon sx={{ fontSize: "3rem" }} htmlColor="#000" />
             )}
           </IconButton>
 
@@ -97,7 +136,16 @@ const Controls = () => {
           sx={{ mb: 1, px: 1, width: "200px" }}
           alignItems="center"
         >
-          <IconButton onClick={() => setVolume((oldVolume) => oldVolume - 0.1)}>
+          <IconButton
+            onClick={() => {
+              setVolume((oldVolume) => {
+                const newVolume = oldVolume - 0.1;
+                if (newVolume === 0) return oldVolume;
+                audioPlayer.current.volume = newVolume;
+                return newVolume;
+              });
+            }}
+          >
             <VolumeDownRounded />
           </IconButton>
           <Slider
@@ -124,7 +172,16 @@ const Controls = () => {
               },
             }}
           />
-          <IconButton onClick={() => setVolume((oldVolume) => oldVolume + 0.1)}>
+          <IconButton
+            onClick={() => {
+              setVolume((oldVolume) => {
+                const newVolume = oldVolume + 0.1;
+                if (newVolume === 1) return oldVolume;
+                audioPlayer.current.volume = newVolume;
+                return newVolume;
+              });
+            }}
+          >
             <VolumeUpRounded />
           </IconButton>
         </Stack>
@@ -136,12 +193,14 @@ const Controls = () => {
         min={0}
         step={1}
         max={duration}
-        onChange={(_, value) => setPosition(value)}
+        onChange={(_, value) => {
+          setPosition(value);
+          audioPlayer.current.currentTime = value;
+        }}
         sx={{
           height: 6,
           color: "#3F7089",
           "& .MuiSlider-thumb": {
-            transition: "0.3s cubic-bezier(.47,1.64,.41,.8)",
             "&:before": {
               boxShadow: "0 2px 12px 0 rgba(0,0,0,0.4)",
             },
