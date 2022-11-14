@@ -1,20 +1,20 @@
 import * as React from "react";
-import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
-import Slider from "@mui/material/Slider";
-import IconButton from "@mui/material/IconButton";
-import ShuffleIcon from "@mui/icons-material/Shuffle";
-import ShuffleOnIcon from "@mui/icons-material/ShuffleOn";
-import FastRewindIcon from "@mui/icons-material/FastRewind";
 import FastForwardIcon from "@mui/icons-material/FastForward";
+import FastRewindIcon from "@mui/icons-material/FastRewind";
+import IconButton from "@mui/material/IconButton";
+import PauseCircleIcon from "@mui/icons-material/PauseCircle";
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import RepeatOneIcon from "@mui/icons-material/RepeatOne";
 import RepeatOneOnIcon from "@mui/icons-material/RepeatOneOn";
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import PauseCircleIcon from "@mui/icons-material/PauseCircle";
-import VolumeUpRounded from "@mui/icons-material/VolumeUpRounded";
+import ShuffleIcon from "@mui/icons-material/Shuffle";
+import ShuffleOnIcon from "@mui/icons-material/ShuffleOn";
+import Slider from "@mui/material/Slider";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import VolumeDownRounded from "@mui/icons-material/VolumeDownRounded";
+import VolumeUpRounded from "@mui/icons-material/VolumeUpRounded";
+import { styled } from "@mui/material/styles";
 
 const TinyText = styled(Typography)({
   fontSize: "0.75rem",
@@ -35,17 +35,15 @@ const Controls = () => {
 
   React.useEffect(() => {
     const subscribeTrackEvents = (track) => {
-      track.addEventListener("loadedmetadata", function () {
-        setDuration(track.duration);
-        track.volume = volume;
-      });
+      setDuration(track.duration);
+      track.volume = volume;
 
       track.addEventListener("timeupdate", function () {
         setPosition(track.currentTime);
       });
 
       track.addEventListener("ended", function () {
-        // alert("END");
+        alert("END");
       });
     };
 
