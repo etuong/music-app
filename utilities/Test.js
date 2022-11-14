@@ -1,17 +1,17 @@
-import AWS from "aws-sdk";
+// import AWS from "aws-sdk";
+const AWS = require("aws-sdk");
 
 const s3 = new AWS.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  region: process.env.AWS_REGION,
+  accessKeyId: "AKIA3TKNSJGOEYLSTHBD",
+  secretAccessKey: "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",
+  region: "us-west-1",
 });
 
-export const getPlaylists = async () => {
-  const playlists = new Map();
-  const Bucket = process.env.AWS_BUCKET;
+const playlists = new Map();
 
+const getSongs = async () => {
   await s3
-    .listObjectsV2({ Bucket }, (err, data) => {
+    .listObjectsV2({ Bucket: "ethan-music-playlists" }, (err, data) => {
       if (err) {
         console.log(err, err.stack);
       } else {
@@ -28,5 +28,7 @@ export const getPlaylists = async () => {
     })
     .promise();
 
-  return playlists;
+  console.log(playlists);
 };
+
+getSongs();

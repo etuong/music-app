@@ -9,6 +9,7 @@ import ListItemText from "@mui/material/ListItemText";
 import styled from "@emotion/styled";
 import { Folder } from "@mui/icons-material";
 import { FolderOpen } from "@mui/icons-material";
+import { useMusic } from "../providers/MusicProvider";
 
 const Title = styled.div`
   font-size: 1.5em;
@@ -16,22 +17,9 @@ const Title = styled.div`
   font-weight: bold;
 `;
 
-function createData(name, calories) {
-  return { name, calories };
-}
-
-const categories = [
-  createData("Oldies", 1),
-  createData("Chinese", 1),
-  createData("Vietnamese", 1),
-  createData("Workout", 1),
-  createData("Study", 1),
-  createData("Crying", 1),
-  createData("Chill House", 1),
-  createData("Breakup", 1),
-];
-
 const Playlist = () => {
+  // const [playlists] = useMusic();
+  // const categories = Array.from(playlists.keys());
   const [selectedIndex, setSelectedIndex] = React.useState(2);
 
   return (
@@ -55,19 +43,20 @@ const Playlist = () => {
             },
           }}
         >
-          {categories.map((category, index) => (
-            <ListItem disablePadding key={index}>
-              <ListItemButton
-                selected={selectedIndex === index}
-                onClick={(_event) => setSelectedIndex(index)}
-              >
-                <ListItemIcon>
-                  {selectedIndex === index ? <FolderOpen /> : <Folder />}
-                </ListItemIcon>
-                <ListItemText primary={category.name} />
-              </ListItemButton>
-            </ListItem>
-          ))}
+          {/* {Array.isArray(categories) &&
+            categories?.map((category, index) => (
+              <ListItem disablePadding key={index}>
+                <ListItemButton
+                  selected={selectedIndex === index}
+                  onClick={(_event) => setSelectedIndex(index)}
+                >
+                  <ListItemIcon>
+                    {selectedIndex === index ? <FolderOpen /> : <Folder />}
+                  </ListItemIcon>
+                  <ListItemText primary={category.name} />
+                </ListItemButton>
+              </ListItem>
+            ))} */}
         </List>
       </nav>
     </Box>

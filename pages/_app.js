@@ -3,6 +3,7 @@ import Head from "next/head";
 import CssBaseline from "@mui/material/CssBaseline";
 import { CacheProvider } from "@emotion/react";
 import createEmotionCache from "../config/createEmotionCache";
+import { MusicProvider } from "../providers/MusicProvider";
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -13,11 +14,16 @@ export default function MyApp(props) {
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
+        <title>Ethan's Music Player</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.png" />
       </Head>
 
       <CssBaseline />
-      <Component {...pageProps} />
+
+      <MusicProvider>
+        <Component {...pageProps} />
+      </MusicProvider>
     </CacheProvider>
   );
 }
