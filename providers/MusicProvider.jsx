@@ -1,16 +1,16 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getPlaylists } from "../utilities/AwsHelper";
 
 const MusicContext = createContext({});
 
 export const useMusic = () => useContext(MusicContext);
 
 export const MusicProvider = ({ children }) => {
-  const [playlists, setPlaylists] = useState([]);
+  const [playlists, setPlaylists] = useState({});
 
   const fetchPlaylists = async () => {
-    const fetchedPlaylists = await getPlaylists();
-    setPlaylists(fetchedPlaylists);
+    const res = await fetch(`/api/s3`);
+    const data = await res.json();
+    setPlaylists(data);
   };
 
   useEffect(() => {

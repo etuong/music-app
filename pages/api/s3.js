@@ -7,17 +7,21 @@ export default async function handler(req, res) {
     region: process.env.AWS_REGION,
   });
 
-  const get = await s3.createPresignedPost({
-    Bucket: process.env.AWS_BUCKET,
-    Fields: {
-      key: req.query.file,
-      "Content-Type": req.query.fileType,
-    },
-    Expires: 60, // seconds
-    Conditions: [
-      ["content-length-range", 0, 1048576], // up to 1 MB
-    ],
+  const data = await s3
+    .listObjectsV2({ Bucket: "ethan-music-playlists" })
+    .promise();
+
+  const playlists = new Map();
+
+  data.Contents.forEach((content) => {
+    const [category, song] = content.Key.split("/");
+    const songs = playlists.get(category);
+    if (songs) {
+      songs.push(song);
+    } else {
+      playlists.set(category, [song]);
+    }
   });
 
-  res.status(200).json(get);
+  res.status(200).json(Object.fromEntries(playlists));
 }

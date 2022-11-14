@@ -18,9 +18,13 @@ const Title = styled.div`
 `;
 
 const Playlist = () => {
-  // const [playlists] = useMusic();
-  // const categories = Array.from(playlists.keys());
+  const { playlists } = useMusic();
+  const [categories, setCategories] = React.useState([]);
   const [selectedIndex, setSelectedIndex] = React.useState(2);
+
+  React.useEffect(() => {
+    setCategories(Object.keys(playlists));
+  }, [playlists]);
 
   return (
     <Box sx={{ minWidth: 250, overflow: "auto", height: "100%" }}>
@@ -43,8 +47,7 @@ const Playlist = () => {
             },
           }}
         >
-          {/* {Array.isArray(categories) &&
-            categories?.map((category, index) => (
+          {categories?.map((category, index) => (
               <ListItem disablePadding key={index}>
                 <ListItemButton
                   selected={selectedIndex === index}
@@ -53,10 +56,10 @@ const Playlist = () => {
                   <ListItemIcon>
                     {selectedIndex === index ? <FolderOpen /> : <Folder />}
                   </ListItemIcon>
-                  <ListItemText primary={category.name} />
+                  <ListItemText primary={category} />
                 </ListItemButton>
               </ListItem>
-            ))} */}
+            ))}
         </List>
       </nav>
     </Box>

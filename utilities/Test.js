@@ -10,7 +10,9 @@ const s3 = new AWS.S3({
 const getSongs = async () => {
   const playlists = new Map();
 
-  const data = await s3.listObjectsV2({ Bucket: "ethan-music-playlists" });
+  const data = await s3
+    .listObjectsV2({ Bucket: "ethan-music-playlists" })
+    .promise();
 
   data.Contents.forEach((content) => {
     const [category, song] = content.Key.split("/");
