@@ -18,7 +18,7 @@ const Title = styled.div`
 `;
 
 const Playlist = () => {
-  const { playlists } = useMusic();
+  const { playlists, handlePlaylistChange } = useMusic();
   const [categories, setCategories] = React.useState([]);
   const [selectedIndex, setSelectedIndex] = React.useState(2);
 
@@ -48,18 +48,21 @@ const Playlist = () => {
           }}
         >
           {categories?.map((category, index) => (
-              <ListItem disablePadding key={index}>
-                <ListItemButton
-                  selected={selectedIndex === index}
-                  onClick={(_event) => setSelectedIndex(index)}
-                >
-                  <ListItemIcon>
-                    {selectedIndex === index ? <FolderOpen /> : <Folder />}
-                  </ListItemIcon>
-                  <ListItemText primary={category} />
-                </ListItemButton>
-              </ListItem>
-            ))}
+            <ListItem disablePadding key={index}>
+              <ListItemButton
+                selected={selectedIndex === index}
+                onClick={(_event) => {
+                  setSelectedIndex(index);
+                  handlePlaylistChange(category);
+                }}
+              >
+                <ListItemIcon>
+                  {selectedIndex === index ? <FolderOpen /> : <Folder />}
+                </ListItemIcon>
+                <ListItemText primary={category} />
+              </ListItemButton>
+            </ListItem>
+          ))}
         </List>
       </nav>
     </Box>

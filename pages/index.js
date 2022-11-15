@@ -6,7 +6,7 @@ import styled from "@emotion/styled";
 
 const MainContainer = styled.div`
   display: flex;
-  padding: 2%;
+  padding: 1.5%;
   height: 100vh;
 `;
 
@@ -14,7 +14,7 @@ export default function App() {
   return (
     <MainContainer>
       <Playlist />
-      <Stack sx={{ width: "100%", marginLeft: "10px" }}>
+      <Stack sx={{ width: "100%", marginLeft: "15px" }}>
         <Controls />
         <Songs />
       </Stack>

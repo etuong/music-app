@@ -6,20 +6,11 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-].flatMap((i) => Array.from({ length: 8 }).fill(i));
+import { useMusic } from "../providers/MusicProvider";
 
 export default function Songs() {
+  const { currentPlaylist } = useMusic();
+
   return (
     <TableContainer component={Paper}>
       <Table stickyHeader size="small" aria-label="simple table">
@@ -34,7 +25,7 @@ export default function Songs() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, index) => (
+          {currentPlaylist?.map((row, index) => (
             <TableRow
               key={index}
               onDoubleClick={() => alert(index)}

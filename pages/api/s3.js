@@ -8,7 +8,7 @@ export default async function handler(req, res) {
   });
 
   const data = await s3
-    .listObjectsV2({ Bucket: "ethan-music-playlists" })
+    .listObjectsV2({ Bucket: process.env.AWS_BUCKET})
     .promise();
 
   const playlists = new Map();
