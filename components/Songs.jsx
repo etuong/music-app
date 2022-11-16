@@ -7,9 +7,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useMusic } from "../providers/MusicProvider";
+import { getSongNameWithExt } from "../utilities/NameParser";
 
 export default function Songs() {
-  const { songs, setCurrentSong, currentSong } = useMusic();
+  const { songs, handleSongChange, currentSong } = useMusic();
 
   return (
     <TableContainer component={Paper} sx={{ height: "100%" }}>
@@ -23,8 +24,8 @@ export default function Songs() {
           {songs?.map((row, index) => (
             <TableRow
               key={index}
-              onDoubleClick={() => setCurrentSong(row)}
-              selected={currentSong === row}
+              onDoubleClick={() => handleSongChange(index)}
+              selected={getSongNameWithExt(currentSong) === row}
               sx={{
                 "&:last-child td, &:last-child th": { border: 0 },
                 cursor: "default",

@@ -8,6 +8,7 @@ export const MusicProvider = ({ children }) => {
   const [playlists, setPlaylists] = useState({});
   const [songs, setSongs] = useState([]);
   const [currentSong, setCurrentSong] = useState("");
+  const [currentSongIndex, setCurrentSongIndex] = useState(-1);
   const [currentCategory, setCurrentCategory] = useState("");
 
   const fetchPlaylists = async () => {
@@ -22,6 +23,13 @@ export const MusicProvider = ({ children }) => {
     setSongs(songs);
   };
 
+  const handleSongChange = (newSongIndex) => {
+    const newSong = songs[newSongIndex];
+    setCurrentSong(
+      `${process.env.NEXT_PUBLIC_AWS_CLOUDFRONT}/${currentCategory}/${newSong}`
+    );
+  };
+
   useEffect(() => {
     fetchPlaylists();
   }, []);
@@ -32,7 +40,7 @@ export const MusicProvider = ({ children }) => {
         playlists,
         handlePlaylistChange,
         songs,
-        setCurrentSong,
+        handleSongChange,
         currentSong,
         currentCategory,
       }}

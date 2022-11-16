@@ -26,7 +26,7 @@ const TinyText = styled(Typography)({
 });
 
 const Controls = () => {
-  const { currentSong, currentCategory } = useMusic();
+  const { currentSong } = useMusic();
   const [position, setPosition] = React.useState(0);
   const [volume, setVolume] = React.useState(0.5);
   const [isPlaying, setIsPlaying] = React.useState(false);
@@ -37,26 +37,25 @@ const Controls = () => {
   const audioPlayer = React.useRef();
 
   React.useEffect(() => {
-    const subscribeTrackEvents = (track) => {
-      track.addEventListener("timeupdate", function () {
-        setPosition(track.currentTime);
-      });
-
-      track.addEventListener("ended", function () {
-        alert("END");
-      });
-    };
-
-    return () => subscribeTrackEvents(audioPlayer.current);
-  }, []);
-
-  React.useEffect(() => {
-    setTimeout(() => {
-      setDuration(audioPlayer.current.duration);
-      setIsPlaying(true);
-      audioPlayer.current.play();
-    }, 500);
+    if (currentSong) {
+      setTimeout(() => {
+        setDuration(audioPlayer.current.duration);
+        setIsPlaying(true);
+        audioPlayer.current.play();
+      }, 500);
+    }
   }, [currentSong]);
+
+  const onTimeUpdate = (e) => {
+    setPosition(e.target.currentTime);
+  };
+
+  const onEnded = (e) => {
+    if (repeatOne) {
+      setPosition(0);
+      e.target.play();
+    }
+  };
 
   const formatDuration = (secs) => {
     if (!secs || secs <= 0 || isNaN(secs)) {
@@ -80,8 +79,10 @@ const Controls = () => {
     <Box>
       <audio
         ref={audioPlayer}
-        src={`${process.env.NEXT_PUBLIC_AWS_CLOUDFRONT}/${currentCategory}/${currentSong}`}
+        src={currentSong}
         preload="metadata"
+        onTimeUpdate={onTimeUpdate}
+        onEnded={onEnded}
       ></audio>
 
       <Box
@@ -201,7 +202,7 @@ const Controls = () => {
         value={position}
         min={0}
         step={1}
-        max={duration}
+        max={duration || 0}
         onChange={(_, value) => {
           setPosition(value);
           audioPlayer.current.currentTime = value;
