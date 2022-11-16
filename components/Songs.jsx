@@ -9,7 +9,7 @@ import TableRow from "@mui/material/TableRow";
 import { useMusic } from "../providers/MusicProvider";
 
 export default function Songs() {
-  const { currentPlaylist } = useMusic();
+  const { currentPlaylist, handleSongChange } = useMusic();
 
   return (
     <TableContainer component={Paper}>
@@ -17,26 +17,22 @@ export default function Songs() {
         <TableHead>
           <TableRow>
             <TableCell>ID</TableCell>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell>Calories</TableCell>
-            <TableCell>Fat&nbsp;(g)</TableCell>
-            <TableCell>Carbs&nbsp;(g)</TableCell>
-            <TableCell>Protein&nbsp;(g)</TableCell>
+            <TableCell>Title</TableCell>
+            <TableCell>Duration</TableCell>
+            <TableCell>Size</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {currentPlaylist?.map((row, index) => (
             <TableRow
               key={index}
-              onDoubleClick={() => alert(index)}
+              onDoubleClick={() => handleSongChange(row)}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell>{index + 1}</TableCell>
-              <TableCell>{row.name}</TableCell>
-              <TableCell>{row.calories}</TableCell>
-              <TableCell>{row.fat}</TableCell>
-              <TableCell>{row.carbs}</TableCell>
-              <TableCell>{row.protein}</TableCell>
+              <TableCell>{row}</TableCell>
+              <TableCell>{row}</TableCell>
+              <TableCell>{row}</TableCell>
             </TableRow>
           ))}
         </TableBody>

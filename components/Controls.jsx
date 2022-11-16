@@ -15,6 +15,7 @@ import Typography from "@mui/material/Typography";
 import VolumeDownRounded from "@mui/icons-material/VolumeDownRounded";
 import VolumeUpRounded from "@mui/icons-material/VolumeUpRounded";
 import { styled } from "@mui/material/styles";
+import { useMusic } from "../providers/MusicProvider";
 
 const TinyText = styled(Typography)({
   fontSize: "0.75rem",
@@ -24,6 +25,7 @@ const TinyText = styled(Typography)({
 });
 
 const Controls = () => {
+  const { currentSong } = useMusic();
   const [position, setPosition] = React.useState(0);
   const [volume, setVolume] = React.useState(0.5);
   const [isPlaying, setIsPlaying] = React.useState(false);
@@ -48,7 +50,7 @@ const Controls = () => {
     };
 
     subscribeTrackEvents(audioPlayer.current);
-  }, []);
+  }, [audioPlayer.current]);
 
   const formatDuration = (secs) => {
     const minutes = Math.floor(secs / 60);
@@ -66,11 +68,7 @@ const Controls = () => {
 
   return (
     <Box>
-      <audio
-        ref={audioPlayer}
-        src="https://dfalmen8fy7vv.cloudfront.net/Love+Songs/Come+Sail+Away.mp3"
-        preload="metadata"
-      ></audio>
+      <audio ref={audioPlayer} src={currentSong} preload="metadata"></audio>
 
       <Box
         sx={{
