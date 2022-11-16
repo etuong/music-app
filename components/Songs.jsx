@@ -9,30 +9,28 @@ import TableRow from "@mui/material/TableRow";
 import { useMusic } from "../providers/MusicProvider";
 
 export default function Songs() {
-  const { currentPlaylist, handleSongChange } = useMusic();
+  const { songs, setCurrentSong, currentSong } = useMusic();
 
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} sx={{ height: "100%" }}>
       <Table stickyHeader size="small" aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>ID</TableCell>
             <TableCell>Title</TableCell>
-            <TableCell>Duration</TableCell>
-            <TableCell>Size</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {currentPlaylist?.map((row, index) => (
+          {songs?.map((row, index) => (
             <TableRow
               key={index}
-              onDoubleClick={() => handleSongChange(row)}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              onDoubleClick={() => setCurrentSong(row)}
+              selected={currentSong === row}
+              sx={{
+                "&:last-child td, &:last-child th": { border: 0 },
+                cursor: "default",
+              }}
             >
-              <TableCell>{index + 1}</TableCell>
-              <TableCell>{row}</TableCell>
-              <TableCell>{row}</TableCell>
-              <TableCell>{row}</TableCell>
+              <TableCell sx={{ userSelect: "none" }}>{row}</TableCell>
             </TableRow>
           ))}
         </TableBody>

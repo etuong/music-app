@@ -20,7 +20,16 @@ const Title = styled.div`
 const Playlist = () => {
   const { playlists, handlePlaylistChange } = useMusic();
   const [categories, setCategories] = React.useState([]);
-  const [selectedIndex, setSelectedIndex] = React.useState(2);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
+
+  React.useEffect(() => {
+    handleSelection(0);
+  }, [categories]);
+
+  const handleSelection = (index) => {
+    setSelectedIndex(index);
+    handlePlaylistChange(categories[index]);
+  };
 
   React.useEffect(() => {
     setCategories(Object.keys(playlists));
@@ -52,8 +61,7 @@ const Playlist = () => {
               <ListItemButton
                 selected={selectedIndex === index}
                 onClick={(_event) => {
-                  setSelectedIndex(index);
-                  handlePlaylistChange(category);
+                  handleSelection(index);
                 }}
               >
                 <ListItemIcon>

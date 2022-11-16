@@ -16,6 +16,7 @@ import VolumeDownRounded from "@mui/icons-material/VolumeDownRounded";
 import VolumeUpRounded from "@mui/icons-material/VolumeUpRounded";
 import { styled } from "@mui/material/styles";
 import { useMusic } from "../providers/MusicProvider";
+import { getSongName } from "../utilities/NameParser";
 
 const TinyText = styled(Typography)({
   fontSize: "0.75rem",
@@ -25,7 +26,7 @@ const TinyText = styled(Typography)({
 });
 
 const Controls = () => {
-  const { currentSong } = useMusic();
+  const { currentSong, currentCategory } = useMusic();
   const [position, setPosition] = React.useState(0);
   const [volume, setVolume] = React.useState(0.5);
   const [isPlaying, setIsPlaying] = React.useState(false);
@@ -37,9 +38,6 @@ const Controls = () => {
 
   React.useEffect(() => {
     const subscribeTrackEvents = (track) => {
-      setDuration(track.duration);
-      track.volume = volume;
-
       track.addEventListener("timeupdate", function () {
         setPosition(track.currentTime);
       });
@@ -49,10 +47,22 @@ const Controls = () => {
       });
     };
 
-    subscribeTrackEvents(audioPlayer.current);
-  }, [audioPlayer.current]);
+    return () => subscribeTrackEvents(audioPlayer.current);
+  }, []);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      setDuration(audioPlayer.current.duration);
+      setIsPlaying(true);
+      audioPlayer.current.play();
+    }, 500);
+  }, [currentSong]);
 
   const formatDuration = (secs) => {
+    if (!secs || secs <= 0 || isNaN(secs)) {
+      return "--:--";
+    }
+
     const minutes = Math.floor(secs / 60);
     const returnedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
     const seconds = Math.floor(secs % 60);
@@ -68,7 +78,11 @@ const Controls = () => {
 
   return (
     <Box>
-      <audio ref={audioPlayer} src={currentSong} preload="metadata"></audio>
+      <audio
+        ref={audioPlayer}
+        src={`${process.env.NEXT_PUBLIC_AWS_CLOUDFRONT}/${currentCategory}/${currentSong}`}
+        preload="metadata"
+      ></audio>
 
       <Box
         sx={{
@@ -78,8 +92,8 @@ const Controls = () => {
           mt: -1,
         }}
       >
-        <Typography noWrap>
-          <b>My Heart Will Go On</b>
+        <Typography noWrap sx={{ minWidth: "200px" }}>
+          <b>{getSongName(currentSong)}</b>
         </Typography>
 
         <Box
