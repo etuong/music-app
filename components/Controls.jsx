@@ -16,7 +16,7 @@ import VolumeDownRounded from "@mui/icons-material/VolumeDownRounded";
 import VolumeUpRounded from "@mui/icons-material/VolumeUpRounded";
 import { styled } from "@mui/material/styles";
 import { useMusic } from "../providers/MusicProvider";
-import { getSongName } from "../utilities/NameParser";
+import { getSongName, formatTime } from "../utilities/utils";
 
 const TinyText = styled(Typography)({
   fontSize: "0.75rem",
@@ -26,12 +26,12 @@ const TinyText = styled(Typography)({
 });
 
 const Controls = () => {
-  const { currentSong } = useMusic();
+  const { currentSong, shuffle, setShuffle, handlePreviousNextSong } =
+    useMusic();
   const [position, setPosition] = React.useState(0);
   const [volume, setVolume] = React.useState(0.5);
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [repeatOne, setRepeatOne] = React.useState(false);
-  const [shuffle, setShuffle] = React.useState(false);
   const [duration, setDuration] = React.useState(0);
 
   const audioPlayer = React.useRef();
@@ -40,8 +40,7 @@ const Controls = () => {
     if (currentSong) {
       setTimeout(() => {
         setDuration(audioPlayer.current.duration);
-        setIsPlaying(true);
-        audioPlayer.current.play();
+        handleIsPlaying(true);
       }, 500);
     }
   }, [currentSong]);
@@ -53,26 +52,20 @@ const Controls = () => {
   const onEnded = (e) => {
     if (repeatOne) {
       setPosition(0);
-      e.target.play();
+      handleIsPlaying(true);
+    } else {
+      handleIsPlaying(false);
     }
   };
 
-  const formatDuration = (secs) => {
-    if (!secs || secs <= 0 || isNaN(secs)) {
-      return "--:--";
+  const handleIsPlaying = (flag) => {
+    if (flag) {
+      setIsPlaying(true);
+      audioPlayer.current.play();
+    } else {
+      setIsPlaying(false);
+      audioPlayer.current.pause();
     }
-
-    const minutes = Math.floor(secs / 60);
-    const returnedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
-    const seconds = Math.floor(secs % 60);
-    const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
-    return `${returnedMinutes}:${returnedSeconds}`;
-  };
-
-  const togglePlayPause = () => {
-    const prevValue = isPlaying;
-    setIsPlaying(!prevValue);
-    !prevValue ? audioPlayer.current.play() : audioPlayer.current.pause();
   };
 
   return (
@@ -93,7 +86,7 @@ const Controls = () => {
           mt: -1,
         }}
       >
-        <Typography noWrap sx={{ minWidth: "200px" }}>
+        <Typography noWrap sx={{ minWidth: "220px" }}>
           <b>{getSongName(currentSong)}</b>
         </Typography>
 
@@ -109,13 +102,13 @@ const Controls = () => {
             {shuffle ? <ShuffleOnIcon htmlColor="#000" /> : <ShuffleIcon />}
           </IconButton>
 
-          <IconButton>
+          <IconButton onClick={() => handlePreviousNextSong(-1)}>
             <FastRewindIcon />
           </IconButton>
 
           <IconButton
             aria-label={isPlaying ? "play" : "pause"}
-            onClick={() => togglePlayPause()}
+            onClick={() => handleIsPlaying(!isPlaying)}
           >
             {isPlaying ? (
               <PauseCircleIcon sx={{ fontSize: "3rem" }} htmlColor="#000" />
@@ -124,7 +117,7 @@ const Controls = () => {
             )}
           </IconButton>
 
-          <IconButton>
+          <IconButton onClick={() => handlePreviousNextSong(1)}>
             <FastForwardIcon />
           </IconButton>
 
@@ -146,8 +139,7 @@ const Controls = () => {
           <IconButton
             onClick={() => {
               setVolume((oldVolume) => {
-                const newVolume = oldVolume - 0.1;
-                if (newVolume < 0) return oldVolume;
+                const newVolume = Math.max(oldVolume - 0.1, 0);
                 audioPlayer.current.volume = newVolume;
                 return newVolume;
               });
@@ -185,8 +177,7 @@ const Controls = () => {
           <IconButton
             onClick={() => {
               setVolume((oldVolume) => {
-                const newVolume = oldVolume + 0.1;
-                if (newVolume > 1) return oldVolume;
+                const newVolume = Math.min(oldVolume + 0.1, 1);
                 audioPlayer.current.volume = newVolume;
                 return newVolume;
               });
@@ -204,7 +195,6 @@ const Controls = () => {
         step={1}
         max={duration || 0}
         onChange={(_, value) => {
-          setPosition(value);
           audioPlayer.current.currentTime = value;
         }}
         sx={{
@@ -238,8 +228,8 @@ const Controls = () => {
           mt: -2,
         }}
       >
-        <TinyText>{formatDuration(position)}</TinyText>
-        <TinyText>{formatDuration(duration)}</TinyText>
+        <TinyText>{formatTime(position)}</TinyText>
+        <TinyText>{formatTime(duration)}</TinyText>
       </Box>
     </Box>
   );

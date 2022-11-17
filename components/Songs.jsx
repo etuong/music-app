@@ -7,7 +7,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useMusic } from "../providers/MusicProvider";
-import { getSongNameWithExt } from "../utilities/NameParser";
+import { getSongNameWithExt } from "../utilities/utils";
 
 export default function Songs() {
   const { songs, handleSongChange, currentSong } = useMusic();

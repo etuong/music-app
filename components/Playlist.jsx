@@ -26,14 +26,14 @@ const Playlist = () => {
     handleSelection(0);
   }, [categories]);
 
+  React.useEffect(() => {
+    setCategories(Object.keys(playlists));
+  }, [playlists]);
+  
   const handleSelection = (index) => {
     setSelectedIndex(index);
     handlePlaylistChange(categories[index]);
   };
-
-  React.useEffect(() => {
-    setCategories(Object.keys(playlists));
-  }, [playlists]);
 
   return (
     <Box sx={{ minWidth: 250, overflow: "auto", height: "100%" }}>

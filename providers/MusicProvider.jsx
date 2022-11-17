@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { getRandomRangedNumber } from "../utilities/utils";
 
 const MusicContext = createContext({});
 
@@ -10,6 +11,7 @@ export const MusicProvider = ({ children }) => {
   const [currentSong, setCurrentSong] = useState("");
   const [currentSongIndex, setCurrentSongIndex] = useState(-1);
   const [currentCategory, setCurrentCategory] = useState("");
+  const [shuffle, setShuffle] = useState(false);
 
   const fetchPlaylists = async () => {
     const res = await fetch(`/api/s3`);
@@ -25,9 +27,28 @@ export const MusicProvider = ({ children }) => {
 
   const handleSongChange = (newSongIndex) => {
     const newSong = songs[newSongIndex];
+    setCurrentSongIndex(newSongIndex);
     setCurrentSong(
       `${process.env.NEXT_PUBLIC_AWS_CLOUDFRONT}/${currentCategory}/${newSong}`
     );
+  };
+
+  const handlePreviousNextSong = (direction) => {
+    let newSongIndex = -1;
+    if (shuffle) {
+      while (newSongIndex === -1 || newSongIndex === currentSongIndex) {
+        newSongIndex = getRandomRangedNumber(songs.length);
+      }
+    } else {
+      newSongIndex = currentSongIndex + direction;
+      if (newSongIndex >= songs.length) {
+        newSongIndex = 0;
+      } else if (newSongIndex < 0) {
+        newSongIndex = songs.length - 1;
+      }
+    }
+
+    handleSongChange(newSongIndex);
   };
 
   useEffect(() => {
@@ -43,6 +64,9 @@ export const MusicProvider = ({ children }) => {
         handleSongChange,
         currentSong,
         currentCategory,
+        shuffle,
+        setShuffle,
+        handlePreviousNextSong,
       }}
     >
       {children}
