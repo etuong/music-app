@@ -10,14 +10,15 @@ import RepeatOneOnIcon from "@mui/icons-material/RepeatOneOn";
 import ShuffleIcon from "@mui/icons-material/Shuffle";
 import ShuffleOnIcon from "@mui/icons-material/ShuffleOn";
 import Slider from "@mui/material/Slider";
+import Spectrum from "../components/Spectrum";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import VolumeDownRounded from "@mui/icons-material/VolumeDownRounded";
 import VolumeUpRounded from "@mui/icons-material/VolumeUpRounded";
+import { formatTime, getSongName } from "../utilities/utils";
+import { memo } from "react";
 import { styled } from "@mui/material/styles";
 import { useMusic } from "../providers/MusicProvider";
-import { getSongName, formatTime } from "../utilities/utils";
-import { memo } from "react";
 
 const TinyText = styled(Typography)({
   fontSize: "0.75rem",
@@ -55,7 +56,7 @@ const Controls = () => {
       setPosition(0);
       handleIsPlaying(true);
     } else {
-      handleIsPlaying(false);
+      handlePreviousNextSong(1);
     }
   };
 
@@ -72,7 +73,8 @@ const Controls = () => {
   return (
     <Box>
       <audio
-        id="music"
+        id="audio"
+        crossOrigin="anonymous"
         ref={audioPlayer}
         src={currentSong}
         preload="metadata"
@@ -132,6 +134,7 @@ const Controls = () => {
           </IconButton>
         </Box>
 
+        <Spectrum />
         <Stack
           spacing={2}
           direction="row"

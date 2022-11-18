@@ -3,18 +3,17 @@ import AudioSpectrum from "react-audio-spectrum";
 const Spectrum = () => (
   <AudioSpectrum
     id="audio-canvas"
-    key={`music_Spectrum`}
-    height={200}
-    width={520}
-    audioId={"music"}
-    capColor={"lightgreen"}
+    height={50}
+    width={100}
+    audioId={"audio"}
+    capColor={"red"}
     capHeight={2}
     meterWidth={2}
     meterCount={512}
     meterColor={[
-      { stop: 0, color: "red" },
-      { stop: 0.5, color: "rgb(194, 248, 0)" },
-      { stop: 1, color: "rgb(194, 248, 0)" },
+      {stop: 0, color: '#3F7089'},
+      {stop: 0.5, color: '#0CD7FD'},
+      {stop: 1, color: 'red'}
     ]}
     gap={4}
   />
