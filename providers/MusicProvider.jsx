@@ -1,5 +1,6 @@
-import { createContext, useContext, useEffect, useState } from "react";
 import { getRandomRangedNumber } from "../utilities/utils";
+import { createContext, useContext, useEffect, useState } from "react";
+import radioList from "../utilities/RadioPlaylist";
 
 const MusicContext = createContext({});
 
@@ -8,10 +9,11 @@ export const useMusic = () => useContext(MusicContext);
 export const MusicProvider = ({ children }) => {
   const [playlists, setPlaylists] = useState({});
   const [songs, setSongs] = useState([]);
-  const [currentSong, setCurrentSong] = useState("");
+  const [currentSong, setCurrentSong] = useState(undefined);
   const [currentSongIndex, setCurrentSongIndex] = useState(-1);
   const [currentCategory, setCurrentCategory] = useState("");
   const [shuffle, setShuffle] = useState(false);
+  const [currentRadio, setCurrentRadio] = useState(undefined);
 
   const fetchPlaylists = async () => {
     const res = await fetch(`/api/s3`);
@@ -20,9 +22,15 @@ export const MusicProvider = ({ children }) => {
   };
 
   const handlePlaylistChange = async (category) => {
+    setCurrentRadio(undefined);
     setCurrentCategory(category);
     const songs = playlists[category];
     setSongs(songs);
+  };
+
+  const handleRadioChange = async (station) => {
+    setCurrentSong(undefined);
+    setCurrentRadio(station);
   };
 
   const handleSongChange = (newSongIndex) => {
@@ -67,6 +75,9 @@ export const MusicProvider = ({ children }) => {
         shuffle,
         setShuffle,
         handlePreviousNextSong,
+        handleRadioChange,
+        radioList,
+        currentRadio,
       }}
     >
       {children}

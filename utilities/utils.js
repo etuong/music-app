@@ -5,6 +5,8 @@ export function getSongName(song) {
 }
 
 export function getSongNameWithExt(song) {
+  if (!song) return "";
+
   return song.slice(song.lastIndexOf("/") + 1);
 }
 

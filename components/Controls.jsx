@@ -28,8 +28,13 @@ const TinyText = styled(Typography)({
 });
 
 const Controls = () => {
-  const { currentSong, shuffle, setShuffle, handlePreviousNextSong } =
-    useMusic();
+  const {
+    currentSong,
+    shuffle,
+    setShuffle,
+    currentRadio,
+    handlePreviousNextSong,
+  } = useMusic();
   const [position, setPosition] = React.useState(0);
   const [volume, setVolume] = React.useState(0.5);
   const [isPlaying, setIsPlaying] = React.useState(false);
@@ -45,14 +50,25 @@ const Controls = () => {
         handleIsPlaying(true);
       }, 500);
     }
-  }, [currentSong]);
+  }, [currentSong, currentRadio]);
+
+  React.useEffect(() => {
+    if (currentRadio) {
+      setTimeout(() => {
+        setDuration(0);
+        handleIsPlaying(true);
+      }, 500);
+    }
+  }, [currentRadio]);
 
   const onTimeUpdate = (e) => {
-    setPosition(e.target.currentTime);
+    if (currentSong) {
+      setPosition(e.target.currentTime);
+    }
   };
 
   const onEnded = (e) => {
-    if (repeatOne) {
+    if (currentSong && repeatOne) {
       setPosition(0);
       handleIsPlaying(true);
     } else {
@@ -70,13 +86,15 @@ const Controls = () => {
     }
   };
 
+  const disableControl = currentRadio !== undefined;
+
   return (
     <Box>
       <audio
         id="audio"
         crossOrigin="anonymous"
         ref={audioPlayer}
-        src={currentSong}
+        src={currentSong ? currentSong : currentRadio ? currentRadio.src : ""}
         preload="metadata"
         onTimeUpdate={onTimeUpdate}
         onEnded={onEnded}
@@ -91,7 +109,7 @@ const Controls = () => {
         }}
       >
         <Typography noWrap sx={{ minWidth: "220px" }}>
-          <b>{getSongName(currentSong)}</b>
+          <b>{currentRadio ? currentRadio.name : getSongName(currentSong)}</b>
         </Typography>
 
         <Box
@@ -102,11 +120,17 @@ const Controls = () => {
             mt: -1,
           }}
         >
-          <IconButton onClick={() => setShuffle(!shuffle)}>
+          <IconButton
+            onClick={() => setShuffle(!shuffle)}
+            disabled={disableControl}
+          >
             {shuffle ? <ShuffleOnIcon htmlColor="#000" /> : <ShuffleIcon />}
           </IconButton>
 
-          <IconButton onClick={() => handlePreviousNextSong(-1)}>
+          <IconButton
+            onClick={() => handlePreviousNextSong(-1)}
+            disabled={disableControl}
+          >
             <FastRewindIcon />
           </IconButton>
 
@@ -121,11 +145,17 @@ const Controls = () => {
             )}
           </IconButton>
 
-          <IconButton onClick={() => handlePreviousNextSong(1)}>
+          <IconButton
+            onClick={() => handlePreviousNextSong(1)}
+            disabled={disableControl}
+          >
             <FastForwardIcon />
           </IconButton>
 
-          <IconButton onClick={() => setRepeatOne(!repeatOne)}>
+          <IconButton
+            onClick={() => setRepeatOne(!repeatOne)}
+            disabled={disableControl}
+          >
             {repeatOne ? (
               <RepeatOneOnIcon htmlColor="#000" />
             ) : (
@@ -195,6 +225,7 @@ const Controls = () => {
 
       <Slider
         aria-label="time-indicator"
+        disabled={disableControl}
         value={position}
         min={0}
         step={1}

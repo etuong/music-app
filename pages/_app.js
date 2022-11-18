@@ -1,8 +1,9 @@
+import "../styles/globals.scss";
 import * as React from "react";
-import Head from "next/head";
 import CssBaseline from "@mui/material/CssBaseline";
-import { CacheProvider } from "@emotion/react";
+import Head from "next/head";
 import createEmotionCache from "../config/createEmotionCache";
+import { CacheProvider } from "@emotion/react";
 import { MusicProvider } from "../providers/MusicProvider";
 
 // Client-side cache, shared for the whole session of the user in the browser.

@@ -6,12 +6,24 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import { useMusic } from "../providers/MusicProvider";
 import { getSongNameWithExt } from "../utilities/utils";
 import { memo } from "react";
+import { useMusic } from "../providers/MusicProvider";
 
 const Songs = () => {
-  const { songs, handleSongChange, currentSong } = useMusic();
+  const { songs, handleSongChange, currentSong, currentRadio } = useMusic();
+
+  if (currentRadio) {
+    return (
+      <div className="song-container">
+        <img
+          src={`${currentRadio.cover}`}
+          className={"rotate-animation"}
+          alt=""
+        />
+      </div>
+    );
+  }
 
   return (
     <TableContainer component={Paper} sx={{ height: "100%" }}>

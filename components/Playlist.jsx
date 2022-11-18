@@ -6,11 +6,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import RadioIcon from "@mui/icons-material/Radio";
 import styled from "@emotion/styled";
 import { Folder } from "@mui/icons-material";
 import { FolderOpen } from "@mui/icons-material";
-import { useMusic } from "../providers/MusicProvider";
 import { memo } from "react";
+import { useMusic } from "../providers/MusicProvider";
 
 const Title = styled.div`
   font-size: 1.5em;
@@ -19,28 +20,34 @@ const Title = styled.div`
 `;
 
 const Playlist = () => {
-  const { playlists, handlePlaylistChange } = useMusic();
+  const { playlists, radioList, handlePlaylistChange, handleRadioChange } =
+    useMusic();
   const [categories, setCategories] = React.useState([]);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [selectedIndex, setSelectedIndex] = React.useState(-1);
 
   React.useEffect(() => {
-    handleSelection(0);
+    handleCategorySelection(radioList.length);
   }, [categories]);
 
   React.useEffect(() => {
     setCategories(Object.keys(playlists));
   }, [playlists]);
 
-  const handleSelection = (index) => {
+  const handleCategorySelection = (index) => {
     setSelectedIndex(index);
-    handlePlaylistChange(categories[index]);
+    handlePlaylistChange(categories[index - radioList.length]);
+  };
+
+  const handleRadioSelection = (index) => {
+    setSelectedIndex(index);
+    handleRadioChange(radioList[index]);
   };
 
   return (
     <Box sx={{ minWidth: 250, overflow: "auto", height: "100%" }}>
       <Title>Ethan's Playlists</Title>
       <Divider />
-      <nav aria-label="main mailbox folders">
+      <nav aria-label="main">
         <List
           sx={{
             "&& .Mui-selected, && .Mui-selected:hover": {
@@ -57,21 +64,42 @@ const Playlist = () => {
             },
           }}
         >
-          {categories?.map((category, index) => (
+          {radioList?.map((channel, index) => (
             <ListItem disablePadding key={index}>
               <ListItemButton
                 selected={selectedIndex === index}
                 onClick={(_event) => {
-                  handleSelection(index);
+                  handleRadioSelection(index);
                 }}
               >
                 <ListItemIcon>
-                  {selectedIndex === index ? <FolderOpen /> : <Folder />}
+                  <RadioIcon />
                 </ListItemIcon>
-                <ListItemText primary={category} />
+                <ListItemText primary={channel.name} />
               </ListItemButton>
             </ListItem>
           ))}
+
+          <Divider sx={{ marginTop: "10px", marginBottom: "10px" }} />
+
+          {categories?.map((category, i) => {
+            const index = i + radioList.length;
+            return (
+              <ListItem disablePadding key={index}>
+                <ListItemButton
+                  selected={selectedIndex === index}
+                  onClick={(_event) => {
+                    handleCategorySelection(index);
+                  }}
+                >
+                  <ListItemIcon>
+                    {selectedIndex === index ? <FolderOpen /> : <Folder />}
+                  </ListItemIcon>
+                  <ListItemText primary={category} />
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
         </List>
       </nav>
     </Box>

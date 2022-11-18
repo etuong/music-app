@@ -1,0 +1,26 @@
+.radio-container {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: clamp(14rem, 25vw, 16rem);
+    height: clamp(14rem, 25vw, 16rem);
+    border-radius: 50%;
+    margin: 2rem 0;
+  }
+  .rotate-animation {
+    animation: rotation 6s infinite linear;
+  }
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
