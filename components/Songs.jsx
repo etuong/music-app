@@ -8,8 +8,9 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useMusic } from "../providers/MusicProvider";
 import { getSongNameWithExt } from "../utilities/utils";
+import { memo } from "react";
 
-export default function Songs() {
+const Songs = () => {
   const { songs, handleSongChange, currentSong } = useMusic();
 
   return (
@@ -38,4 +39,6 @@ export default function Songs() {
       </Table>
     </TableContainer>
   );
-}
+};
+
+export default memo(Songs);

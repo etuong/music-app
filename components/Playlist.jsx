@@ -10,6 +10,7 @@ import styled from "@emotion/styled";
 import { Folder } from "@mui/icons-material";
 import { FolderOpen } from "@mui/icons-material";
 import { useMusic } from "../providers/MusicProvider";
+import { memo } from "react";
 
 const Title = styled.div`
   font-size: 1.5em;
@@ -29,7 +30,7 @@ const Playlist = () => {
   React.useEffect(() => {
     setCategories(Object.keys(playlists));
   }, [playlists]);
-  
+
   const handleSelection = (index) => {
     setSelectedIndex(index);
     handlePlaylistChange(categories[index]);
@@ -77,4 +78,4 @@ const Playlist = () => {
   );
 };
 
-export default Playlist;
+export default memo(Playlist);

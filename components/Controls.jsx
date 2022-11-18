@@ -17,6 +17,7 @@ import VolumeUpRounded from "@mui/icons-material/VolumeUpRounded";
 import { styled } from "@mui/material/styles";
 import { useMusic } from "../providers/MusicProvider";
 import { getSongName, formatTime } from "../utilities/utils";
+import { memo } from "react";
 
 const TinyText = styled(Typography)({
   fontSize: "0.75rem",
@@ -71,6 +72,7 @@ const Controls = () => {
   return (
     <Box>
       <audio
+        id="music"
         ref={audioPlayer}
         src={currentSong}
         preload="metadata"
@@ -235,4 +237,4 @@ const Controls = () => {
   );
 };
 
-export default Controls;
+export default memo(Controls);

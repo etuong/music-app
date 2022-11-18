@@ -1,5 +1,6 @@
 import Controls from "../components/Controls";
 import Playlist from "../components/Playlist";
+import Spectrum from "../components/Spectrum";
 import Songs from "../components/Songs";
 import Stack from "@mui/material/Stack";
 import styled from "@emotion/styled";
@@ -17,6 +18,7 @@ export default function App() {
       <Stack sx={{ width: "100%", marginLeft: "15px" }}>
         <Controls />
         <Songs />
+        <Spectrum />
       </Stack>
     </MainContainer>
   );
