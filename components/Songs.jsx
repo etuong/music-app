@@ -11,11 +11,11 @@ import { memo } from "react";
 import { useMusic } from "../providers/MusicProvider";
 
 const Songs = () => {
-  const { songs, handleSongChange, currentSong, currentRadio } = useMusic();
+  const { currentRadio, currentSong, handleSongChange, songs } = useMusic();
 
   if (currentRadio) {
     return (
-      <div className="song-container">
+      <div className="radio-container">
         <img
           src={`${currentRadio.cover}`}
           className={"rotate-animation"}

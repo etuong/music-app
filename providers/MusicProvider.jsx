@@ -24,6 +24,7 @@ export const MusicProvider = ({ children }) => {
   const handlePlaylistChange = async (category) => {
     setCurrentRadio(undefined);
     setCurrentCategory(category);
+    setCurrentSongIndex(-1);
     const songs = playlists[category];
     setSongs(songs);
   };
@@ -66,18 +67,18 @@ export const MusicProvider = ({ children }) => {
   return (
     <MusicContext.Provider
       value={{
-        playlists,
-        handlePlaylistChange,
-        songs,
-        handleSongChange,
-        currentSong,
         currentCategory,
-        shuffle,
-        setShuffle,
+        currentRadio,
+        currentSong,
+        handlePlaylistChange,
         handlePreviousNextSong,
         handleRadioChange,
+        handleSongChange,
+        playlists,
         radioList,
-        currentRadio,
+        setShuffle,
+        shuffle,
+        songs,
       }}
     >
       {children}

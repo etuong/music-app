@@ -1,4 +1,4 @@
-import "../styles/globals.scss";
+import "../styles/global.scss";
 import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Head from "next/head";

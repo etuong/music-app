@@ -29,11 +29,11 @@ const TinyText = styled(Typography)({
 
 const Controls = () => {
   const {
-    currentSong,
-    shuffle,
-    setShuffle,
     currentRadio,
+    currentSong,
     handlePreviousNextSong,
+    setShuffle,
+    shuffle,
   } = useMusic();
   const [position, setPosition] = React.useState(0);
   const [volume, setVolume] = React.useState(0.5);
@@ -49,8 +49,10 @@ const Controls = () => {
         setDuration(audioPlayer.current.duration);
         handleIsPlaying(true);
       }, 500);
+    } else {
+      handleIsPlaying(false);
     }
-  }, [currentSong, currentRadio]);
+  }, [currentSong]);
 
   React.useEffect(() => {
     if (currentRadio) {
@@ -58,6 +60,9 @@ const Controls = () => {
         setDuration(0);
         handleIsPlaying(true);
       }, 500);
+      setPosition(0);
+    } else {
+      handleIsPlaying(false);
     }
   }, [currentRadio]);
 
@@ -87,6 +92,8 @@ const Controls = () => {
   };
 
   const disableControl = currentRadio !== undefined;
+
+  const iconColor = disableControl ? "#eee" : "#000";
 
   return (
     <Box>
@@ -124,19 +131,29 @@ const Controls = () => {
             onClick={() => setShuffle(!shuffle)}
             disabled={disableControl}
           >
-            {shuffle ? <ShuffleOnIcon htmlColor="#000" /> : <ShuffleIcon />}
+            {shuffle ? (
+              <ShuffleOnIcon htmlColor={iconColor} />
+            ) : (
+              <ShuffleIcon htmlColor={iconColor} />
+            )}
           </IconButton>
 
           <IconButton
             onClick={() => handlePreviousNextSong(-1)}
             disabled={disableControl}
           >
-            <FastRewindIcon />
+            <FastRewindIcon htmlColor={iconColor} />
           </IconButton>
 
           <IconButton
             aria-label={isPlaying ? "play" : "pause"}
-            onClick={() => handleIsPlaying(!isPlaying)}
+            onClick={() => {
+              if (currentSong || currentRadio) {
+                handleIsPlaying(!isPlaying);
+              } else {
+                handlePreviousNextSong(1);
+              }
+            }}
           >
             {isPlaying ? (
               <PauseCircleIcon sx={{ fontSize: "3rem" }} htmlColor="#000" />
@@ -149,7 +166,7 @@ const Controls = () => {
             onClick={() => handlePreviousNextSong(1)}
             disabled={disableControl}
           >
-            <FastForwardIcon />
+            <FastForwardIcon htmlColor={iconColor} />
           </IconButton>
 
           <IconButton
@@ -157,14 +174,15 @@ const Controls = () => {
             disabled={disableControl}
           >
             {repeatOne ? (
-              <RepeatOneOnIcon htmlColor="#000" />
+              <RepeatOneOnIcon htmlColor={iconColor} />
             ) : (
-              <RepeatOneIcon />
+              <RepeatOneIcon htmlColor={iconColor} />
             )}
           </IconButton>
         </Box>
 
         <Spectrum />
+
         <Stack
           spacing={2}
           direction="row"

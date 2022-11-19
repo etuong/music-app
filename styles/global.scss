@@ -1,13 +1,12 @@
 .radio-container {
-  min-height: 60vh;
+  min-height: 80vh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
 
   img {
-    width: clamp(14rem, 25vw, 16rem);
-    height: clamp(14rem, 25vw, 16rem);
+    width: clamp(30rem, 25vw, 16rem);
+    height: clamp(30rem, 25vw, 16rem);
     border-radius: 50%;
     margin: 2rem 0;
   }

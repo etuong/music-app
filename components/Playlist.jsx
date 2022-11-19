@@ -26,11 +26,8 @@ const Playlist = () => {
   const [selectedIndex, setSelectedIndex] = React.useState(-1);
 
   React.useEffect(() => {
-    handleCategorySelection(radioList.length);
-  }, [categories]);
-
-  React.useEffect(() => {
     setCategories(Object.keys(playlists));
+    handleCategorySelection(radioList.length);
   }, [playlists]);
 
   const handleCategorySelection = (index) => {
@@ -47,61 +44,60 @@ const Playlist = () => {
     <Box sx={{ minWidth: 250, overflow: "auto", height: "100%" }}>
       <Title>Ethan's Playlists</Title>
       <Divider />
-      <nav aria-label="main">
-        <List
-          sx={{
-            "&& .Mui-selected, && .Mui-selected:hover": {
-              bgcolor: "#3F7089",
-              "&, & .MuiListItemIcon-root": {
-                color: "white",
-              },
+
+      <List
+        sx={{
+          "&& .Mui-selected, && .Mui-selected:hover": {
+            bgcolor: "#3F7089",
+            "&, & .MuiListItemIcon-root": {
+              color: "white",
             },
-            "& .MuiListItemButton-root:hover": {
-              bgcolor: "transparent",
-              "&, & .MuiListItemIcon-root": {
-                color: "#3F7089",
-              },
+          },
+          "& .MuiListItemButton-root:hover": {
+            bgcolor: "transparent",
+            "&, & .MuiListItemIcon-root": {
+              color: "#3F7089",
             },
-          }}
-        >
-          {radioList?.map((channel, index) => (
+          },
+        }}
+      >
+        {radioList?.map((channel, index) => (
+          <ListItem disablePadding key={index}>
+            <ListItemButton
+              selected={selectedIndex === index}
+              onClick={(_event) => {
+                handleRadioSelection(index);
+              }}
+            >
+              <ListItemIcon>
+                <RadioIcon />
+              </ListItemIcon>
+              <ListItemText primary={channel.name} />
+            </ListItemButton>
+          </ListItem>
+        ))}
+
+        <Divider sx={{ marginTop: "10px", marginBottom: "10px" }} />
+
+        {categories?.map((category, i) => {
+          const index = i + radioList.length;
+          return (
             <ListItem disablePadding key={index}>
               <ListItemButton
                 selected={selectedIndex === index}
                 onClick={(_event) => {
-                  handleRadioSelection(index);
+                  handleCategorySelection(index);
                 }}
               >
                 <ListItemIcon>
-                  <RadioIcon />
+                  {selectedIndex === index ? <FolderOpen /> : <Folder />}
                 </ListItemIcon>
-                <ListItemText primary={channel.name} />
+                <ListItemText primary={category} />
               </ListItemButton>
             </ListItem>
-          ))}
-
-          <Divider sx={{ marginTop: "10px", marginBottom: "10px" }} />
-
-          {categories?.map((category, i) => {
-            const index = i + radioList.length;
-            return (
-              <ListItem disablePadding key={index}>
-                <ListItemButton
-                  selected={selectedIndex === index}
-                  onClick={(_event) => {
-                    handleCategorySelection(index);
-                  }}
-                >
-                  <ListItemIcon>
-                    {selectedIndex === index ? <FolderOpen /> : <Folder />}
-                  </ListItemIcon>
-                  <ListItemText primary={category} />
-                </ListItemButton>
-              </ListItem>
-            );
-          })}
-        </List>
-      </nav>
+          );
+        })}
+      </List>
     </Box>
   );
 };
