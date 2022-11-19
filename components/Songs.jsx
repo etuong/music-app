@@ -9,6 +9,11 @@ import TableRow from "@mui/material/TableRow";
 import { getSongNameWithExt } from "../utilities/utils";
 import { memo } from "react";
 import { useMusic } from "../providers/MusicProvider";
+import { styled } from "@mui/material/styles";
+
+const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
+  backgroundColor: "rgba(255,255,255,0.3)",
+}));
 
 const Songs = () => {
   const { currentRadio, currentSong, handleSongChange, songs } = useMusic();
@@ -26,7 +31,7 @@ const Songs = () => {
   }
 
   return (
-    <TableContainer component={Paper} sx={{ height: "100%" }}>
+    <StyledTableContainer component={Paper} sx={{ height: "100%" }}>
       <Table stickyHeader size="small" aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -49,7 +54,7 @@ const Songs = () => {
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
+    </StyledTableContainer>
   );
 };
 

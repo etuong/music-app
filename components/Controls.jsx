@@ -115,7 +115,7 @@ const Controls = () => {
           mt: -1,
         }}
       >
-        <Typography noWrap sx={{ minWidth: "220px" }}>
+        <Typography noWrap variant="h6" sx={{ minWidth: "220px", color: "#A4B7BE" }}>
           <b>{currentRadio ? currentRadio.name : getSongName(currentSong)}</b>
         </Typography>
 
