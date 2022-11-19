@@ -38,7 +38,7 @@ export const MusicProvider = ({ children }) => {
     const newSong = songs[newSongIndex];
     setCurrentSongIndex(newSongIndex);
     setCurrentSong(
-      `${process.env.NEXT_PUBLIC_AWS_CLOUDFRONT}/${currentCategory}/${newSong}`
+      `${process.env.NEXT_PUBLIC_CLOUDFRONT}/${currentCategory}/${newSong}`
     );
   };
 
