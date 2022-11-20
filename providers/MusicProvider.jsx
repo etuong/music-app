@@ -63,9 +63,9 @@ export const MusicProvider = ({ children }) => {
     handleSongChange(newSongIndex);
   };
 
-  // useEffect(async () => {
-  //   await fetchPlaylists();
-  // }, []);
+  useEffect(() => {
+    (async () => await fetchPlaylists())();
+  }, []);
 
   return (
     <MusicContext.Provider
