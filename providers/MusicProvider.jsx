@@ -63,8 +63,8 @@ export const MusicProvider = ({ children }) => {
     handleSongChange(newSongIndex);
   };
 
-  useEffect(() => {
-    fetchPlaylists();
+  useEffect(async () => {
+    await fetchPlaylists();
   }, []);
 
   return (
