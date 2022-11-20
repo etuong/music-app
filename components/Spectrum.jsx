@@ -1,4 +1,5 @@
 import AudioSpectrum from "react-audio-spectrum";
+import { memo } from "react";
 
 const Spectrum = ({ width, height }) => (
   <AudioSpectrum
@@ -19,4 +20,4 @@ const Spectrum = ({ width, height }) => (
   />
 );
 
-export default Spectrum;
+export default memo(Spectrum);

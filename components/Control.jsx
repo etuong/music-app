@@ -11,17 +11,28 @@ import ShuffleOnIcon from "@mui/icons-material/ShuffleOn";
 import { StyledIconButton } from "./Common";
 import { useMusic } from "../providers/MusicProvider";
 
-const Control = () => {
+const Control = ({ audioPlayer }) => {
   const {
     currentRadio,
     currentSong,
     handlePreviousNextSong,
+    isPlaying,
+    repeatOne,
+    setIsPlaying,
+    setRepeatOne,
     setShuffle,
     shuffle,
-    repeatOne,
-    setRepeatOne,
-    isPlaying,
   } = useMusic();
+
+  const handleIsPlaying = (flag) => {
+    if (flag) {
+      setIsPlaying(true);
+      audioPlayer?.current?.play();
+    } else {
+      setIsPlaying(false);
+      audioPlayer?.current?.pause();
+    }
+  };
 
   const disableControl = currentRadio !== undefined;
 

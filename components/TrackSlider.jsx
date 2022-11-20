@@ -1,8 +1,9 @@
+import * as React from "react";
 import Box from "@mui/material/Box";
 import Slider from "@mui/material/Slider";
-import * as React from "react";
-import { formatTime } from "../utilities/utils";
 import { TinyText } from "./Common";
+import { formatTime } from "../utilities/utils";
+import { memo } from "react";
 import { useMusic } from "../providers/MusicProvider";
 
 const TrackSlider = ({ audioPlayer }) => {
@@ -14,7 +15,7 @@ const TrackSlider = ({ audioPlayer }) => {
   React.useEffect(() => {
     if (currentSong) {
       setTimeout(() => {
-        setDuration(audioPlayer.current.duration);
+        setDuration(audioPlayer?.current?.duration);
         handleIsPlaying(true);
       }, 500);
     } else {
@@ -37,10 +38,10 @@ const TrackSlider = ({ audioPlayer }) => {
   const handleIsPlaying = (flag) => {
     if (flag) {
       setIsPlaying(true);
-      audioPlayer.current.play();
+      audioPlayer?.current?.play();
     } else {
       setIsPlaying(false);
-      audioPlayer.current.pause();
+      audioPlayer?.current?.pause();
     }
   };
 
@@ -96,4 +97,4 @@ const TrackSlider = ({ audioPlayer }) => {
   );
 };
 
-export default TrackSlider;
+export default memo(TrackSlider);

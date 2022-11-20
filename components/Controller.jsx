@@ -71,7 +71,7 @@ const Controller = () => {
           <b>{currentRadio ? currentRadio.name : getSongName(currentSong)}</b>
         </Typography>
 
-        <Control />
+        <Control audioPlayer={audioPlayer}/>
 
         <Spectrum width={100} height={50} />
 
