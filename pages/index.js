@@ -4,6 +4,7 @@ import Playlist from "../components/Playlist";
 import Songs from "../components/Songs";
 import Stack from "@mui/material/Stack";
 import styled from "@emotion/styled";
+import { useLayoutEffect, useEffect, useState } from "react";
 
 const MainContainer = styled.div`
   display: flex;
@@ -15,12 +16,25 @@ const MainContainer = styled.div`
   border: 2px solid rgb(223, 223, 223);
 `;
 
-export default function App({ isMobile }) {
-  if (isMobile) {
-    return <Mobile />;
-  }
+export default function App() {
+  const [isMobile, setIsMobile] = useState(false);
 
-  return (
+  const useIsomorphicLayoutEffect =
+    typeof window !== "undefined" ? useLayoutEffect : useEffect;
+
+  useIsomorphicLayoutEffect(() => {
+    setIsMobile(
+      typeof window !== "undefined"
+        ? navigator.userAgent.match(
+            /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+          )
+        : false
+    );
+  }, []);
+
+  return isMobile ? (
+    <Mobile />
+  ) : (
     <MainContainer>
       <Playlist />
       <Stack sx={{ width: "100%", marginLeft: "15px" }}>
@@ -30,15 +44,3 @@ export default function App({ isMobile }) {
     </MainContainer>
   );
 }
-
-// App.getInitialProps = ({ req }) => {
-//   const userAgent = req ? req.headers["user-agent"] : navigator.userAgent;
-
-//   const isMobile = Boolean(
-//     userAgent.match(
-//       /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
-//     )
-//   );
-
-//   return { isMobile };
-// };
