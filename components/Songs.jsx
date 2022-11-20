@@ -43,7 +43,6 @@ const Songs = () => {
             <TableRow
               key={index}
               onDoubleClick={() => handleSongChange(index)}
-              onTouchStart={() => handleSongChange(index)}
               selected={getSongNameWithExt(currentSong) === row}
               sx={{
                 "&:last-child td, &:last-child th": { border: 0 },

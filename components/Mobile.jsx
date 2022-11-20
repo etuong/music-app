@@ -75,9 +75,13 @@ const Mobile = () => {
       <Drawer anchor="left" open={openDrawer["playlist"]} variant="persistent">
         <IconButton
           onClick={toggleDrawer("playlist", false)}
-          sx={{ justifyContent: "flex-start" }}
+          sx={{
+            justifyContent: "flex-start",
+            paddingTop: "16px",
+            paddingLeft: "16px",
+          }}
         >
-          <CancelIcon sx={{ fontSize: "2.5rem" }} htmlColor="#3F7089" />
+          <CancelIcon sx={{ fontSize: "2.5rem" }} htmlColor="red" />
         </IconButton>
         <div style={{ padding: "10px" }}>
           <Playlist />
@@ -87,9 +91,13 @@ const Mobile = () => {
       <Drawer anchor="right" open={openDrawer["songs"]} variant="persistent">
         <IconButton
           onClick={toggleDrawer("songs", false)}
-          sx={{ justifyContent: "flex-end" }}
+          sx={{
+            justifyContent: "flex-end",
+            paddingTop: "16px",
+            paddingRight: "16px",
+          }}
         >
-          <CancelIcon sx={{ fontSize: "2.5rem" }} htmlColor="#3F7089" />
+          <CancelIcon sx={{ fontSize: "2.5rem" }} htmlColor="red" />
         </IconButton>
         <div style={{ padding: "5px" }}>
           <Songs />
@@ -111,7 +119,7 @@ const Mobile = () => {
 
       <div style={{ margin: "10px", textAlign: "center" }}>
         <TinyText>(1) Pick a radio station or playlist on the left</TinyText>
-        <TinyText>(2) Select a song on the right</TinyText>
+        <TinyText>(2) Double tap on a song on the right</TinyText>
         <TinyText>(3) Enjoy the music!</TinyText>
       </div>
 
