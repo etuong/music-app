@@ -38,6 +38,7 @@ const TrackSlider = ({ audioPlayer }) => {
   const handleIsPlaying = (flag) => {
     if (flag) {
       setIsPlaying(true);
+      audioPlayer?.current?.load();
       audioPlayer?.current?.play();
     } else {
       setIsPlaying(false);

@@ -31,14 +31,14 @@ export default function App({ isMobile }) {
   );
 }
 
-App.getInitialProps = ({ req }) => {
-  const userAgent = req ? req.headers["user-agent"] : navigator.userAgent;
+// App.getInitialProps = ({ req }) => {
+//   const userAgent = req ? req.headers["user-agent"] : navigator.userAgent;
 
-  const isMobile = Boolean(
-    userAgent.match(
-      /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
-    )
-  );
+//   const isMobile = Boolean(
+//     userAgent.match(
+//       /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+//     )
+//   );
 
-  return { isMobile };
-};
+//   return { isMobile };
+// };
