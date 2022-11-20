@@ -26,15 +26,14 @@ const Playlist = () => {
   const [selectedIndex, setSelectedIndex] = React.useState(-1);
 
   React.useEffect(() => {
-    setCategories(Object.keys(playlists));
-    setTimeout(() => {
-      handleCategorySelection(radioList.length + 4); // Initial playlist selection
-    }, 1000);
+    if (Object.keys(playlists).length !== 0) {
+      setCategories(Object.keys(playlists));
+      handleCategorySelection(radioList.length + 4, Object.keys(playlists)); // Initial playlist selection
+    }
   }, [playlists]);
 
-  const handleCategorySelection = (index) => {
+  const handleCategorySelection = (index, categories) => {
     setSelectedIndex(index);
-    console.log(categories);
     handlePlaylistChange(categories[index - radioList.length]);
   };
 
@@ -89,7 +88,7 @@ const Playlist = () => {
               <ListItemButton
                 selected={selectedIndex === index}
                 onClick={(_event) => {
-                  handleCategorySelection(index);
+                  handleCategorySelection(index, categories);
                 }}
               >
                 <ListItemIcon>
