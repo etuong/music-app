@@ -26,8 +26,10 @@ const Playlist = () => {
   const [selectedIndex, setSelectedIndex] = React.useState(-1);
 
   React.useEffect(() => {
-    setCategories(Object.keys(playlists));
-    handleCategorySelection(radioList.length + 4); // Initial playlist selection
+    setTimeout(() => {
+      setCategories(Object.keys(playlists));
+      handleCategorySelection(radioList.length + 4); // Initial playlist selection
+    }, 100);
   }, [playlists]);
 
   const handleCategorySelection = (index) => {

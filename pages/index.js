@@ -15,6 +15,22 @@ const MainContainer = styled.div`
   border: 2px solid rgb(223, 223, 223);
 `;
 
+export async function getServerSideProps(context) {
+  const userAgent = context.req
+    ? context.req.headers["user-agent"]
+    : navigator.userAgent;
+
+  const isMobile = Boolean(
+    userAgent.match(
+      /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+    )
+  );
+
+  return {
+    props: { isMobile },
+  };
+}
+
 export default function App({ isMobile }) {
   if (isMobile) {
     return <Mobile />;
@@ -30,15 +46,3 @@ export default function App({ isMobile }) {
     </MainContainer>
   );
 }
-
-App.getInitialProps = ({ req }) => {
-  const userAgent = req ? req.headers["user-agent"] : navigator.userAgent;
-
-  let isMobile = Boolean(
-    userAgent.match(
-      /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
-    )
-  );
-
-  return { isMobile };
-};

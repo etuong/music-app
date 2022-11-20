@@ -9,7 +9,7 @@ import Playlist from "./Playlist";
 import Songs from "./Songs";
 import Spectrum from "../components/Spectrum";
 import TrackSlider from "./TrackSlider";
-import { StyledIconButton } from "./Common";
+import { StyledIconButton, TinyText } from "./Common";
 import { getSongName } from "../utilities/utils";
 import { memo } from "react";
 import { useMusic } from "../providers/MusicProvider";
@@ -109,8 +109,14 @@ const Mobile = () => {
         </StyledIconButton>
       </div>
 
+      <div style={{ margin: "10px", textAlign: "center" }}>
+        <TinyText>(1) Pick a radio station or playlist on the left</TinyText>
+        <TinyText>(2) Select a song on the right</TinyText>
+        <TinyText>(3) Enjoy the music!</TinyText>
+      </div>
+
       <div style={{ marginTop: "auto", textAlign: "center" }}>
-        <Spectrum />
+        <Spectrum height={300} width={300} />
       </div>
 
       <div className="info">
