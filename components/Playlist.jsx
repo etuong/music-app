@@ -29,11 +29,12 @@ const Playlist = () => {
     setCategories(Object.keys(playlists));
     setTimeout(() => {
       handleCategorySelection(radioList.length + 4); // Initial playlist selection
-    }, 100);
+    }, 1000);
   }, [playlists]);
 
   const handleCategorySelection = (index) => {
     setSelectedIndex(index);
+    console.log(categories);
     handlePlaylistChange(categories[index - radioList.length]);
   };
 
