@@ -7,13 +7,16 @@ const MusicContext = createContext({});
 export const useMusic = () => useContext(MusicContext);
 
 export const MusicProvider = ({ children }) => {
-  const [playlists, setPlaylists] = useState({});
-  const [songs, setSongs] = useState([]);
+  const [currentCategory, setCurrentCategory] = useState("");
+  const [currentRadio, setCurrentRadio] = useState(undefined);
   const [currentSong, setCurrentSong] = useState(undefined);
   const [currentSongIndex, setCurrentSongIndex] = useState(-1);
-  const [currentCategory, setCurrentCategory] = useState("");
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [playlists, setPlaylists] = useState({});
+  const [position, setPosition] = useState(0);
+  const [repeatOne, setRepeatOne] = useState(false);
   const [shuffle, setShuffle] = useState(false);
-  const [currentRadio, setCurrentRadio] = useState(undefined);
+  const [songs, setSongs] = useState([]);
 
   const fetchPlaylists = async () => {
     const res = await fetch(`/api/s3`);
@@ -74,8 +77,14 @@ export const MusicProvider = ({ children }) => {
         handlePreviousNextSong,
         handleRadioChange,
         handleSongChange,
+        isPlaying,
         playlists,
+        position,
         radioList,
+        repeatOne,
+        setIsPlaying,
+        setPosition,
+        setRepeatOne,
         setShuffle,
         shuffle,
         songs,

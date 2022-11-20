@@ -27,7 +27,7 @@ const Playlist = () => {
 
   React.useEffect(() => {
     setCategories(Object.keys(playlists));
-    handleCategorySelection(radioList.length);
+    handleCategorySelection(radioList.length + 4); // Initial playlist selection
   }, [playlists]);
 
   const handleCategorySelection = (index) => {
