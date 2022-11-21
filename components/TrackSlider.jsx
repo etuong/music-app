@@ -17,7 +17,7 @@ const TrackSlider = ({ audioPlayer }) => {
       setTimeout(() => {
         setDuration(audioPlayer?.current?.duration);
         handleIsPlaying(true);
-      }, 300);
+      }, 500);
     } else {
       handleIsPlaying(false);
     }
@@ -25,10 +25,10 @@ const TrackSlider = ({ audioPlayer }) => {
 
   React.useEffect(() => {
     if (currentRadio) {
-      setTimeout(() => {
+      // setTimeout(() => {
         setDuration(0);
         handleIsPlaying(true);
-      }, 300);
+      // }, 500);
       setPosition(0);
     } else {
       handleIsPlaying(false);
@@ -38,10 +38,8 @@ const TrackSlider = ({ audioPlayer }) => {
   const handleIsPlaying = (flag) => {
     if (flag) {
       setIsPlaying(true);
-      setTimeout(() => {
-        audioPlayer?.current?.load();
-        audioPlayer?.current?.play();
-      }, 200);
+      audioPlayer?.current?.load();
+      audioPlayer?.current?.play();
     } else {
       setIsPlaying(false);
       audioPlayer?.current?.pause();

@@ -27,10 +27,8 @@ const Control = ({ audioPlayer }) => {
   const handleIsPlaying = (flag) => {
     if (flag) {
       setIsPlaying(true);
-      setTimeout(() => {
-        audioPlayer?.current?.load();
-        audioPlayer?.current?.play();
-      }, 200);
+      audioPlayer?.current?.load();
+      audioPlayer?.current?.play();
     } else {
       setIsPlaying(false);
       audioPlayer?.current?.pause();
