@@ -14,10 +14,10 @@ const TrackSlider = ({ audioPlayer }) => {
 
   React.useEffect(() => {
     if (currentSong) {
-      setTimeout(() => {
+      // setTimeout(() => {
         setDuration(audioPlayer?.current?.duration);
         handleIsPlaying(true);
-      }, 500);
+      // }, 500);
     } else {
       handleIsPlaying(false);
     }
