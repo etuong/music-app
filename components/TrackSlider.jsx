@@ -6,16 +6,13 @@ import { formatTime } from "../utilities/utils";
 import { memo } from "react";
 import { useMusic } from "../providers/MusicProvider";
 
-const TrackSlider = ({ audioPlayer }) => {
+const TrackSlider = ({ audioPlayer, duration }) => {
   const { currentRadio, currentSong, handleIsPlaying, setPosition, position } =
     useMusic();
-
-  const [duration, setDuration] = React.useState(0);
 
   React.useEffect(() => {
     if (currentSong) {
       setTimeout(() => {
-        setDuration(audioPlayer?.current?.duration);
         handleIsPlaying(audioPlayer?.current, true);
       }, 600);
     } else {
@@ -26,7 +23,6 @@ const TrackSlider = ({ audioPlayer }) => {
   React.useEffect(() => {
     if (currentRadio) {
       setTimeout(() => {
-        setDuration(0);
         handleIsPlaying(audioPlayer?.current, true);
       }, 600);
       setPosition(0);

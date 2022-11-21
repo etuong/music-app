@@ -18,11 +18,12 @@ const Controller = () => {
     currentRadio,
     currentSong,
     handlePreviousNextSong,
-    setPosition,
     repeatOne,
     setIsPlaying,
+    setPosition,
   } = useMusic();
 
+  const [duration, setDuration] = React.useState(0);
   const [volume, setVolume] = React.useState(0.5);
 
   const audioPlayer = React.useRef();
@@ -44,6 +45,14 @@ const Controller = () => {
     }
   };
 
+  const onCanPlayThrough = (e) => {
+    if (currentSong) {
+      setDuration(audioPlayer?.current?.duration);
+    } else if (currentRadio) {
+      setDuration(0);
+    }
+  };
+
   return (
     <Box>
       <audio
@@ -54,6 +63,7 @@ const Controller = () => {
         preload="auto"
         onTimeUpdate={onTimeUpdate}
         onEnded={onEnded}
+        onCanPlayThrough={onCanPlayThrough}
       ></audio>
 
       <Box
@@ -136,7 +146,7 @@ const Controller = () => {
         </Stack>
       </Box>
 
-      <TrackSlider audioPlayer={audioPlayer} />
+      <TrackSlider audioPlayer={audioPlayer} duration={duration} />
     </Box>
   );
 };
