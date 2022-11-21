@@ -17,7 +17,7 @@ const TrackSlider = ({ audioPlayer }) => {
       setTimeout(() => {
         setDuration(audioPlayer?.current?.duration);
         handleIsPlaying(audioPlayer?.current, true);
-      }, 400);
+      }, 600);
     } else {
       handleIsPlaying(audioPlayer?.current, false);
     }
@@ -28,7 +28,7 @@ const TrackSlider = ({ audioPlayer }) => {
       setTimeout(() => {
         setDuration(0);
         handleIsPlaying(audioPlayer?.current, true);
-      }, 400);
+      }, 600);
       setPosition(0);
     } else {
       handleIsPlaying(audioPlayer?.current, false);
