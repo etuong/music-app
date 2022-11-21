@@ -1,6 +1,8 @@
 # 🎵 Music Player App 🎵
 Play your favorite songs and radio stations all in one app!
 
+[Check it out!](https://music-app-etuong.vercel.app/)
+
 ## Screenshots
 
 Desktop view
@@ -10,7 +12,7 @@ Desktop view
 
 Movile view
 
-<img src="screenshot-mobile.jpg" height="300">
+<img src="screenshot-mobile.jpg" height="450">
 
 ## 🔨 Installation
 This web app supports radio stations and custom playlists. The playlists are parsed from S3. Use `.env.sample` to create a `.env.local` and put in your credentials. Run `npm install` to install the dependencies and start with `npm run dev`.
