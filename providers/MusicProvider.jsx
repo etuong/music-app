@@ -45,6 +45,16 @@ export const MusicProvider = ({ children }) => {
     );
   };
 
+  const handleIsPlaying = (audioPlayer, flag) => {
+    if (flag) {
+      setIsPlaying(true);
+      audioPlayer.play();
+    } else {
+      setIsPlaying(false);
+      audioPlayer.pause();
+    }
+  };
+
   const handlePreviousNextSong = (direction) => {
     let newSongIndex = -1;
     if (shuffle) {
@@ -73,6 +83,7 @@ export const MusicProvider = ({ children }) => {
         currentCategory,
         currentRadio,
         currentSong,
+        handleIsPlaying,
         handlePlaylistChange,
         handlePreviousNextSong,
         handleRadioChange,

@@ -15,25 +15,14 @@ const Control = ({ audioPlayer }) => {
   const {
     currentRadio,
     currentSong,
+    handleIsPlaying,
     handlePreviousNextSong,
     isPlaying,
     repeatOne,
-    setIsPlaying,
     setRepeatOne,
     setShuffle,
     shuffle,
   } = useMusic();
-
-  const handleIsPlaying = (flag) => {
-    if (flag) {
-      setIsPlaying(true);
-      audioPlayer?.current?.load();
-      audioPlayer?.current?.play();
-    } else {
-      setIsPlaying(false);
-      audioPlayer?.current?.pause();
-    }
-  };
 
   const disableControl = currentRadio !== undefined;
 
@@ -71,7 +60,7 @@ const Control = ({ audioPlayer }) => {
         aria-label={isPlaying ? "play" : "pause"}
         onClick={() => {
           if (currentSong || currentRadio) {
-            handleIsPlaying(!isPlaying);
+            handleIsPlaying(audioPlayer.current, !isPlaying);
           } else {
             handlePreviousNextSong(1);
           }

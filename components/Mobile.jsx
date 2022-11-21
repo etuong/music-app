@@ -18,6 +18,7 @@ const Mobile = () => {
   const {
     currentRadio,
     currentSong,
+    handleIsPlaying,
     handlePreviousNextSong,
     repeatOne,
     setPosition,
@@ -39,7 +40,7 @@ const Mobile = () => {
   const onEnded = (e) => {
     if (currentSong && repeatOne) {
       setPosition(0);
-      handleIsPlaying(true);
+      handleIsPlaying(audioPlayer?.current, true);
     } else {
       handlePreviousNextSong(1);
     }

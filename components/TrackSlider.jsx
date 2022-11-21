@@ -7,7 +7,7 @@ import { memo } from "react";
 import { useMusic } from "../providers/MusicProvider";
 
 const TrackSlider = ({ audioPlayer }) => {
-  const { currentRadio, currentSong, setIsPlaying, setPosition, position } =
+  const { currentRadio, currentSong, handleIsPlaying, setPosition, position } =
     useMusic();
 
   const [duration, setDuration] = React.useState(0);
@@ -16,10 +16,10 @@ const TrackSlider = ({ audioPlayer }) => {
     if (currentSong) {
       setTimeout(() => {
         setDuration(audioPlayer?.current?.duration);
-        handleIsPlaying(true);
+        handleIsPlaying(audioPlayer?.current, true);
       }, 400);
     } else {
-      handleIsPlaying(false);
+      handleIsPlaying(audioPlayer?.current, false);
     }
   }, [currentSong]);
 
@@ -27,24 +27,13 @@ const TrackSlider = ({ audioPlayer }) => {
     if (currentRadio) {
       setTimeout(() => {
         setDuration(0);
-        handleIsPlaying(true);
+        handleIsPlaying(audioPlayer?.current, true);
       }, 400);
       setPosition(0);
     } else {
-      handleIsPlaying(false);
+      handleIsPlaying(audioPlayer?.current, false);
     }
   }, [currentRadio]);
-
-  const handleIsPlaying = (flag) => {
-    if (flag) {
-      setIsPlaying(true);
-      audioPlayer?.current?.load();
-      audioPlayer?.current?.play();
-    } else {
-      setIsPlaying(false);
-      audioPlayer?.current?.pause();
-    }
-  };
 
   const disableControl = currentRadio !== undefined;
 
