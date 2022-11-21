@@ -50,16 +50,11 @@ const Controller = () => {
         id="audio"
         crossOrigin="anonymous"
         ref={audioPlayer}
+        src={currentSong ? currentSong : currentRadio ? currentRadio.src : ""}
         preload="auto"
         onTimeUpdate={onTimeUpdate}
         onEnded={onEnded}
-      >
-        <source
-          src={currentSong ? currentSong : currentRadio ? currentRadio.src : ""}
-          type="audio/mpeg"
-        />
-        Your browser does not support the audio tag.
-      </audio>
+      ></audio>
 
       <Box
         sx={{
