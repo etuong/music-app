@@ -29,6 +29,8 @@ const Mobile = () => {
     songs: false,
   });
 
+  const [duration, setDuration] = React.useState(0);
+
   const audioPlayer = React.useRef();
 
   const onTimeUpdate = (e) => {
@@ -43,6 +45,14 @@ const Mobile = () => {
       handleIsPlaying(audioPlayer?.current, true);
     } else {
       handlePreviousNextSong(1);
+    }
+  };
+
+  const onCanPlayThrough = (e) => {
+    if (currentSong) {
+      setDuration(audioPlayer?.current?.duration);
+    } else if (currentRadio) {
+      setDuration(0);
     }
   };
 
@@ -71,6 +81,7 @@ const Mobile = () => {
         preload="auto"
         onTimeUpdate={onTimeUpdate}
         onEnded={onEnded}
+        onCanPlayThrough={onCanPlayThrough}
       ></audio>
 
       <Drawer anchor="left" open={openDrawer["playlist"]} variant="persistent">
@@ -132,7 +143,7 @@ const Mobile = () => {
         <h2>{currentRadio ? currentRadio.name : getSongName(currentSong)}</h2>
       </div>
 
-      <TrackSlider audioPlayer={audioPlayer} />
+      <TrackSlider audioPlayer={audioPlayer} duration={duration} />
 
       <Control audioPlayer={audioPlayer} />
     </main>
