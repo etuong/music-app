@@ -37,8 +37,10 @@ const Controller = () => {
     if (currentSong && repeatOne) {
       setPosition(0);
       setIsPlaying(true);
-      audioPlayer.current.load();
-      audioPlayer.current.play();
+      setTimeout(() => {
+        audioPlayer?.current?.load();
+        audioPlayer?.current?.play();
+      }, 200);
     } else {
       handlePreviousNextSong(1);
     }

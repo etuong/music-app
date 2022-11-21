@@ -17,7 +17,7 @@ const TrackSlider = ({ audioPlayer }) => {
       setTimeout(() => {
         setDuration(audioPlayer?.current?.duration);
         handleIsPlaying(true);
-      }, 500);
+      }, 300);
     } else {
       handleIsPlaying(false);
     }
@@ -28,7 +28,7 @@ const TrackSlider = ({ audioPlayer }) => {
       setTimeout(() => {
         setDuration(0);
         handleIsPlaying(true);
-      }, 500);
+      }, 300);
       setPosition(0);
     } else {
       handleIsPlaying(false);
@@ -38,8 +38,10 @@ const TrackSlider = ({ audioPlayer }) => {
   const handleIsPlaying = (flag) => {
     if (flag) {
       setIsPlaying(true);
-      audioPlayer?.current?.load();
-      audioPlayer?.current?.play();
+      setTimeout(() => {
+        audioPlayer?.current?.load();
+        audioPlayer?.current?.play();
+      }, 200);
     } else {
       setIsPlaying(false);
       audioPlayer?.current?.pause();
