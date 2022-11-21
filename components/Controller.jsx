@@ -50,7 +50,7 @@ const Controller = () => {
         id="audio"
         crossOrigin="anonymous"
         ref={audioPlayer}
-        preload="metadata"
+        preload="auto"
         onTimeUpdate={onTimeUpdate}
         onEnded={onEnded}
       >

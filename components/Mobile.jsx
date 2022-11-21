@@ -66,11 +66,16 @@ const Mobile = () => {
         id="audio"
         crossOrigin="anonymous"
         ref={audioPlayer}
-        src={currentSong ? currentSong : currentRadio ? currentRadio.src : ""}
-        preload="metadata"
+        preload="auto"
         onTimeUpdate={onTimeUpdate}
         onEnded={onEnded}
-      ></audio>
+      >
+        <source
+          src={currentSong ? currentSong : currentRadio ? currentRadio.src : ""}
+          type="audio/mpeg"
+        />
+        Your browser does not support the audio tag.
+      </audio>
 
       <Drawer anchor="left" open={openDrawer["playlist"]} variant="persistent">
         <IconButton
