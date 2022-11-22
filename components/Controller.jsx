@@ -30,30 +30,6 @@ const Controller = () => {
 
   const audioPlayer = React.useRef();
 
-  // Hack for Safari and Mobile
-  const dummy = React.useRef();
-  React.useEffect(() => {
-    const element = dummy.current;
-
-    element.addEventListener("click", dummyTest);
-
-    return () => {
-      element.removeEventListener("click", dummyTest);
-    };
-  }, []);
-
-  const dummyTest = (e) => {
-    const sound = new Audio(
-      "https://dfalmen8fy7vv.cloudfront.net/Asian/Buon.mp3"
-    );
-
-    sound.play();
-    sound.pause();
-    sound.currentTime = 0;
-
-    dummy.current.removeEventListener("click", dummyTest);
-  };
-
   const onTimeUpdate = (e) => {
     if (currentSong) {
       setPosition(e.target.currentTime);
@@ -81,7 +57,7 @@ const Controller = () => {
   };
 
   return (
-    <Box ref={dummy}>
+    <Box>
       <audio
         id="audio"
         crossOrigin="anonymous"
