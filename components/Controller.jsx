@@ -18,8 +18,10 @@ const Controller = () => {
     currentRadio,
     currentSong,
     handlePreviousNextSong,
+    isLoading,
     repeatOne,
     setIsPlaying,
+    setIsLoading,
     setPosition,
   } = useMusic();
 
@@ -51,6 +53,8 @@ const Controller = () => {
     } else if (currentRadio) {
       setDuration(0);
     }
+
+    setIsLoading(false);
   };
 
   return (
@@ -79,7 +83,17 @@ const Controller = () => {
           variant="h6"
           sx={{ minWidth: "250px", color: "#A4B7BE" }}
         >
-          <b>{currentRadio ? currentRadio.name : getSongName(currentSong)}</b>
+          <b>
+            {isLoading ? (
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <div className="loader"></div>"Loading.."
+              </div>
+            ) : currentRadio ? (
+              currentRadio.name
+            ) : (
+              getSongName(currentSong)
+            )}
+          </b>
         </Typography>
 
         <Control audioPlayer={audioPlayer} />

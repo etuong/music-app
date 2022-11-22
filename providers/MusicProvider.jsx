@@ -12,6 +12,7 @@ export const MusicProvider = ({ children }) => {
   const [currentSong, setCurrentSong] = useState(undefined);
   const [currentSongIndex, setCurrentSongIndex] = useState(-1);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [playlists, setPlaylists] = useState({});
   const [position, setPosition] = useState(0);
   const [repeatOne, setRepeatOne] = useState(false);
@@ -34,12 +35,14 @@ export const MusicProvider = ({ children }) => {
 
   const handleRadioChange = async (station) => {
     setCurrentSong(undefined);
+    setIsLoading(true);
     setCurrentRadio(station);
   };
 
   const handleSongChange = (newSongIndex) => {
     const newSong = songs[newSongIndex];
     setCurrentSongIndex(newSongIndex);
+    setIsLoading(true);
     setCurrentSong(
       `${process.env.NEXT_PUBLIC_CLOUDFRONT}/${currentCategory}/${newSong}`
     );
@@ -88,11 +91,13 @@ export const MusicProvider = ({ children }) => {
         handlePreviousNextSong,
         handleRadioChange,
         handleSongChange,
+        isLoading,
         isPlaying,
         playlists,
         position,
         radioList,
         repeatOne,
+        setIsLoading,
         setIsPlaying,
         setPosition,
         setRepeatOne,

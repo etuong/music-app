@@ -20,7 +20,9 @@ const Mobile = () => {
     currentSong,
     handleIsPlaying,
     handlePreviousNextSong,
+    isLoading,
     repeatOne,
+    setIsLoading,
     setPosition,
   } = useMusic();
 
@@ -54,6 +56,8 @@ const Mobile = () => {
     } else if (currentRadio) {
       setDuration(0);
     }
+
+    setIsLoading(false);
   };
 
   const toggleDrawer = (anchor, open) => (event) => {
@@ -140,7 +144,23 @@ const Mobile = () => {
       </div>
 
       <div className="info">
-        <h2>{currentRadio ? currentRadio.name : getSongName(currentSong)}</h2>
+        <h2>
+          {isLoading ? (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <div className="loader"></div>"Loading.."
+            </div>
+          ) : currentRadio ? (
+            currentRadio.name
+          ) : (
+            getSongName(currentSong)
+          )}
+        </h2>
       </div>
 
       <TrackSlider audioPlayer={audioPlayer} duration={duration} />

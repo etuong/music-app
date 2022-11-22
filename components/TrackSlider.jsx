@@ -7,8 +7,14 @@ import { memo } from "react";
 import { useMusic } from "../providers/MusicProvider";
 
 const TrackSlider = ({ audioPlayer, duration }) => {
-  const { currentRadio, currentSong, handleIsPlaying, setPosition, position } =
-    useMusic();
+  const {
+    currentRadio,
+    currentSong,
+    handleIsPlaying,
+    setIsLoading,
+    setPosition,
+    position,
+  } = useMusic();
 
   React.useEffect(() => {
     if (currentSong) {
@@ -24,6 +30,7 @@ const TrackSlider = ({ audioPlayer, duration }) => {
     if (currentRadio) {
       setTimeout(() => {
         handleIsPlaying(audioPlayer?.current, true);
+        setIsLoading(false);
       }, 600);
       setPosition(0);
     } else {
