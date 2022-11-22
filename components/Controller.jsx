@@ -35,10 +35,10 @@ const Controller = () => {
   React.useEffect(() => {
     const element = dummy.current;
 
-    element.addEventListener("touchstart", dummyTest);
+    element.addEventListener("click", dummyTest);
 
     return () => {
-      element.removeEventListener("touchstart", dummyTest);
+      element.removeEventListener("click", dummyTest);
     };
   }, []);
 
@@ -51,7 +51,7 @@ const Controller = () => {
     sound.pause();
     sound.currentTime = 0;
 
-    dummy.current.removeEventListener("touchstart", dummyTest);
+    dummy.current.removeEventListener("click", dummyTest);
   };
 
   const onTimeUpdate = (e) => {
@@ -64,8 +64,7 @@ const Controller = () => {
     if (currentSong && repeatOne) {
       setPosition(0);
       setIsPlaying(true);
-      audioPlayer.current.load();
-      audioPlayer.current.play();
+      handleIsPlaying(audioPlayer?.current, true);
     } else {
       handlePreviousNextSong(1);
     }
@@ -110,7 +109,7 @@ const Controller = () => {
           <b>
             {isLoading ? (
               <div style={{ display: "flex", alignItems: "center" }}>
-                <div className="loader"></div>"Loading.."
+                <div className="loader"></div> Loading..
               </div>
             ) : currentRadio ? (
               currentRadio.name

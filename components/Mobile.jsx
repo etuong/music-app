@@ -37,15 +37,15 @@ const Mobile = () => {
 
   // Hack for Safari and Mobile
   const dummy = React.useRef();
-  React.useEffect(() => {
-    const element = dummy.current;
+  // React.useEffect(() => {
+  //   const element = dummy.current;
 
-    element.addEventListener("touchstart", dummyTest);
+  //   element.addEventListener("touchstart", dummyTest);
 
-    return () => {
-      element.removeEventListener("touchstart", dummyTest);
-    };
-  }, []);
+  //   return () => {
+  //     element.removeEventListener("touchstart", dummyTest);
+  //   };
+  // }, []);
 
   const dummyTest = (e) => {
     const sound = new Audio(
@@ -177,7 +177,7 @@ const Mobile = () => {
                 justifyContent: "center",
               }}
             >
-              <div className="loader"></div>"Loading.."
+              <div className="loader"></div> Loading..
             </div>
           ) : currentRadio ? (
             currentRadio.name
