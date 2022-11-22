@@ -60,6 +60,31 @@ const Mobile = () => {
     setIsLoading(false);
   };
 
+  const blah = React.useRef();
+
+  React.useEffect(() => {
+    const element = blah.current;
+
+    element.addEventListener("touchstart", test);
+
+    // 👇️ remove the event listener when component unmounts
+    return () => {
+      element.removeEventListener("touchstart", test);
+    };
+  }, []);
+
+  function test(e) {
+    const sound = new Audio(
+      "https://dfalmen8fy7vv.cloudfront.net/Asian/Buon.mp3"
+    );
+
+    sound.play();
+    sound.pause();
+    sound.currentTime = 0;
+
+    blah.current.removeEventListener("touchstart", test);
+  }
+
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -76,7 +101,7 @@ const Mobile = () => {
   const iconColor = disableControl ? "darkgray" : "#3F7089";
 
   return (
-    <main className="player">
+    <main className="player" ref={blah}>
       <audio
         id="audio"
         crossOrigin="anonymous"
