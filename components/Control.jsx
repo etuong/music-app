@@ -11,7 +11,7 @@ import ShuffleOnIcon from "@mui/icons-material/ShuffleOn";
 import { StyledIconButton } from "./Common";
 import { useMusic } from "../providers/MusicProvider";
 
-const Control = ({ audioPlayer }) => {
+const Control = () => {
   const {
     currentRadio,
     currentSong,
@@ -20,6 +20,7 @@ const Control = ({ audioPlayer }) => {
     isPlaying,
     repeatOne,
     setRepeatOne,
+    audioPlayer,
     setShuffle,
     shuffle,
   } = useMusic();
@@ -60,7 +61,7 @@ const Control = ({ audioPlayer }) => {
         aria-label={isPlaying ? "play" : "pause"}
         onClick={() => {
           if (currentSong || currentRadio) {
-            handleIsPlaying(audioPlayer.current, !isPlaying);
+            handleIsPlaying(!isPlaying);
           } else {
             handlePreviousNextSong(1);
           }

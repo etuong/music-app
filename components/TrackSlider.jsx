@@ -6,35 +6,37 @@ import { formatTime } from "../utilities/utils";
 import { memo } from "react";
 import { useMusic } from "../providers/MusicProvider";
 
-const TrackSlider = ({ audioPlayer, duration }) => {
+const TrackSlider = () => {
   const {
     currentRadio,
     currentSong,
     handleIsPlaying,
     setIsLoading,
     setPosition,
+    duration,
     position,
+    audioPlayer,
   } = useMusic();
 
   React.useEffect(() => {
     if (currentSong) {
       setTimeout(() => {
-        handleIsPlaying(audioPlayer?.current, true);
+        handleIsPlaying(true);
       }, 600);
     } else {
-      handleIsPlaying(audioPlayer?.current, false);
+      handleIsPlaying(false);
     }
   }, [currentSong]);
 
   React.useEffect(() => {
     if (currentRadio) {
       setTimeout(() => {
-        handleIsPlaying(audioPlayer?.current, true);
+        handleIsPlaying(true);
         setIsLoading(false);
       }, 600);
       setPosition(0);
     } else {
-      handleIsPlaying(audioPlayer?.current, false);
+      handleIsPlaying(false);
     }
   }, [currentRadio]);
 
@@ -50,7 +52,7 @@ const TrackSlider = ({ audioPlayer, duration }) => {
         step={1}
         max={duration || 0}
         onChange={(_, value) => {
-          audioPlayer.current.currentTime = value;
+          audioPlayer.currentTime = value;
         }}
         sx={{
           height: 6,

@@ -12,63 +12,16 @@ import { StyledIconButton } from "./Common";
 import { getSongName } from "../utilities/utils";
 import { memo } from "react";
 import { useMusic } from "../providers/MusicProvider";
+import ReactPlayer from "react-audio-player";
 
 const Controller = () => {
-  const {
-    currentRadio,
-    currentSong,
-    handlePreviousNextSong,
-    isLoading,
-    repeatOne,
-    setIsPlaying,
-    setIsLoading,
-    setPosition,
-  } = useMusic();
+  const { currentRadio, currentSong, isLoading, duration, audioPlayer } =
+    useMusic();
 
-  const [duration, setDuration] = React.useState(0);
   const [volume, setVolume] = React.useState(0.5);
-
-  const audioPlayer = React.useRef();
-
-  const onTimeUpdate = (e) => {
-    if (currentSong) {
-      setPosition(e.target.currentTime);
-    }
-  };
-
-  const onEnded = (e) => {
-    if (currentSong && repeatOne) {
-      setPosition(0);
-      setIsPlaying(true);
-      handleIsPlaying(audioPlayer?.current, true);
-    } else {
-      handlePreviousNextSong(1);
-    }
-  };
-
-  const onCanPlayThrough = (e) => {
-    if (currentSong) {
-      setDuration(audioPlayer?.current?.duration);
-    } else if (currentRadio) {
-      setDuration(0);
-    }
-
-    setIsLoading(false);
-  };
 
   return (
     <Box>
-      <audio
-        id="audio"
-        crossOrigin="anonymous"
-        ref={audioPlayer}
-        src={currentSong ? currentSong : currentRadio ? currentRadio.src : ""}
-        preload="auto"
-        onTimeUpdate={onTimeUpdate}
-        onEnded={onEnded}
-        onCanPlayThrough={onCanPlayThrough}
-      ></audio>
-
       <Box
         sx={{
           display: "flex",
@@ -95,7 +48,7 @@ const Controller = () => {
           </b>
         </Typography>
 
-        <Control audioPlayer={audioPlayer} />
+        <Control/>
 
         <Spectrum width={100} height={50} />
 
@@ -109,7 +62,7 @@ const Controller = () => {
             onClick={() => {
               setVolume((oldVolume) => {
                 const newVolume = Math.max(oldVolume - 0.1, 0);
-                audioPlayer.current.volume = newVolume;
+                audioPlayer.volume = newVolume;
                 return newVolume;
               });
             }}
@@ -123,7 +76,7 @@ const Controller = () => {
             max={1}
             step={0.1}
             onChange={(_, value) => {
-              audioPlayer.current.volume = value;
+              audioPlayer.volume = value;
               setVolume(value);
             }}
             sx={{
@@ -149,7 +102,7 @@ const Controller = () => {
             onClick={() => {
               setVolume((oldVolume) => {
                 const newVolume = Math.min(oldVolume + 0.1, 1);
-                audioPlayer.current.volume = newVolume;
+                audioPlayer.volume = newVolume;
                 return newVolume;
               });
             }}
@@ -159,7 +112,7 @@ const Controller = () => {
         </Stack>
       </Box>
 
-      <TrackSlider audioPlayer={audioPlayer} duration={duration} />
+      <TrackSlider />
     </Box>
   );
 };

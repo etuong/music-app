@@ -7,6 +7,8 @@ const MusicContext = createContext({});
 export const useMusic = () => useContext(MusicContext);
 
 export const MusicProvider = ({ children }) => {
+  const [audioPlayer, setAudioPlayer] = useState();
+  const [duration, setDuration] = useState(0);
   const [currentCategory, setCurrentCategory] = useState("");
   const [currentRadio, setCurrentRadio] = useState(undefined);
   const [currentSong, setCurrentSong] = useState(undefined);
@@ -18,6 +20,10 @@ export const MusicProvider = ({ children }) => {
   const [repeatOne, setRepeatOne] = useState(false);
   const [shuffle, setShuffle] = useState(false);
   const [songs, setSongs] = useState([]);
+
+  useEffect(() => {
+    (async () => await fetchPlaylists())();
+  }, []);
 
   const fetchPlaylists = async () => {
     const res = await fetch(`/api/s3`);
@@ -37,6 +43,7 @@ export const MusicProvider = ({ children }) => {
     setCurrentSong(undefined);
     setIsLoading(true);
     setCurrentRadio(station);
+    createNewAudioPlayer(station);
   };
 
   const handleSongChange = (newSongIndex) => {
@@ -46,15 +53,22 @@ export const MusicProvider = ({ children }) => {
     setCurrentSong(
       `${process.env.NEXT_PUBLIC_CLOUDFRONT}/${currentCategory}/${newSong}`
     );
+    const player = createNewAudioPlayer(
+      `${process.env.NEXT_PUBLIC_CLOUDFRONT}/${currentCategory}/${newSong}`
+    );
+    setDuration(player?.duration);
+    setIsLoading(false);
   };
 
-  const handleIsPlaying = (audioPlayer, flag) => {
-    if (flag) {
-      setIsPlaying(true);
-      audioPlayer.play();
-    } else {
-      setIsPlaying(false);
-      audioPlayer.pause();
+  const handleIsPlaying = (flag) => {
+    if (audioPlayer) {
+      if (flag) {
+        setIsPlaying(true);
+        audioPlayer.play();
+      } else {
+        setIsPlaying(false);
+        audioPlayer.pause();
+      }
     }
   };
 
@@ -76,9 +90,53 @@ export const MusicProvider = ({ children }) => {
     handleSongChange(newSongIndex);
   };
 
-  useEffect(() => {
-    (async () => await fetchPlaylists())();
-  }, []);
+  const createNewAudioPlayer = (src) => {
+    let ap = audioPlayer;
+    if (!ap) {
+      ap = new Audio();
+      ap.id = "audio";
+      ap.crossOrigin = "anonymous";
+      ap.src = src;
+      ap.preload = "auto";
+      ap.ontimeupdate = onTimeUpdate;
+      ap.onended = onEnded;
+      // ap.oncanplaythrough = onCanPlayThrough;
+      setAudioPlayer(ap);
+    }
+
+    return ap;
+
+    // setAudioPlayer((prev) => {
+    //   const next = { ...prev, src };
+    //   return next;
+    // });
+  };
+
+  const onTimeUpdate = (e) => {
+    if (currentSong) {
+      setPosition(e.target.currentTime);
+    }
+  };
+
+  const onEnded = (e) => {
+    if (currentSong && repeatOne) {
+      setPosition(0);
+      setIsPlaying(true);
+      handleIsPlaying(audioPlayer, true);
+    } else {
+      handlePreviousNextSong(1);
+    }
+  };
+
+  // const onCanPlayThrough = (e) => {
+  //   if (currentSong) {
+  //     setDuration(audioPlayer?.duration);
+  //   } else if (currentRadio) {
+  //     setDuration(0);
+  //   }
+
+  //   setIsLoading(false);
+  // };
 
   return (
     <MusicContext.Provider
@@ -96,6 +154,7 @@ export const MusicProvider = ({ children }) => {
         playlists,
         position,
         radioList,
+        duration,
         repeatOne,
         setIsLoading,
         setIsPlaying,
@@ -104,6 +163,7 @@ export const MusicProvider = ({ children }) => {
         setShuffle,
         shuffle,
         songs,
+        audioPlayer,
       }}
     >
       {children}
