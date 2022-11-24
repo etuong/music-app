@@ -14,7 +14,7 @@ import { getSongName } from "../utilities/utils";
 import { memo } from "react";
 import { useMusic } from "../providers/MusicProvider";
 
-const Mobile = () => {
+const Mobile = ({ isSafari }) => {
   const { currentRadio, currentSong, isLoading, setAudioPlayer } = useMusic();
 
   const [openDrawer, setOpenDrawer] = React.useState({
@@ -98,7 +98,7 @@ const Mobile = () => {
       </div>
 
       <div style={{ marginTop: "auto", textAlign: "center" }}>
-        {/* <Spectrum height={300} width={300} /> */}
+        {!isSafari && <Spectrum height={300} width={300} />}
       </div>
 
       <div className="info">
