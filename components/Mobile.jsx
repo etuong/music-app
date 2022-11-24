@@ -98,7 +98,7 @@ const Mobile = () => {
       </div>
 
       <div style={{ marginTop: "auto", textAlign: "center" }}>
-        <Spectrum height={300} width={300} />
+        {/* <Spectrum height={300} width={300} /> */}
       </div>
 
       <div className="info">
