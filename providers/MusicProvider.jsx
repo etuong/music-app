@@ -7,10 +7,12 @@ const MusicContext = createContext({});
 export const useMusic = () => useContext(MusicContext);
 
 export const MusicProvider = ({ children }) => {
+  const [audioPlayer, setAudioPlayer] = useState(null);
   const [currentCategory, setCurrentCategory] = useState("");
   const [currentRadio, setCurrentRadio] = useState(undefined);
   const [currentSong, setCurrentSong] = useState(undefined);
   const [currentSongIndex, setCurrentSongIndex] = useState(-1);
+  const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [playlists, setPlaylists] = useState({});
@@ -18,6 +20,28 @@ export const MusicProvider = ({ children }) => {
   const [repeatOne, setRepeatOne] = useState(false);
   const [shuffle, setShuffle] = useState(false);
   const [songs, setSongs] = useState([]);
+
+  useEffect(() => {
+    (async () => await fetchPlaylists())();
+  }, []);
+
+  useEffect(() => {
+    if (audioPlayer) {
+      audioPlayer.onended = onEnded;
+    }
+  }, [currentSong, repeatOne]);
+
+  useEffect(() => {
+    if (audioPlayer) {
+      audioPlayer.ontimeupdate = onTimeUpdate;
+      audioPlayer.oncanplaythrough = onCanPlayThrough;
+      audioPlayer.src = currentSong
+        ? currentSong
+        : currentRadio
+        ? currentRadio.src
+        : "";
+    }
+  }, [currentSong, currentRadio]);
 
   const fetchPlaylists = async () => {
     const res = await fetch(`/api/s3`);
@@ -48,13 +72,15 @@ export const MusicProvider = ({ children }) => {
     );
   };
 
-  const handleIsPlaying = (audioPlayer, flag) => {
-    if (flag) {
-      setIsPlaying(true);
-      audioPlayer.play();
-    } else {
-      setIsPlaying(false);
-      audioPlayer.pause();
+  const handleIsPlaying = (flag) => {
+    if (audioPlayer) {
+      if (flag) {
+        setIsPlaying(true);
+        audioPlayer.play();
+      } else {
+        setIsPlaying(false);
+        audioPlayer.pause();
+      }
     }
   };
 
@@ -76,16 +102,38 @@ export const MusicProvider = ({ children }) => {
     handleSongChange(newSongIndex);
   };
 
-  useEffect(() => {
-    (async () => await fetchPlaylists())();
-  }, []);
+  const onTimeUpdate = (e) => {
+    if (currentSong) {
+      setPosition(e.target.currentTime);
+    }
+  };
+
+  const onEnded = (e) => {
+    if (currentSong && repeatOne) {
+      setPosition(0);
+      handleIsPlaying(true);
+    } else {
+      handlePreviousNextSong(1);
+    }
+  };
+
+  const onCanPlayThrough = (e) => {
+    if (currentSong) {
+      setDuration(audioPlayer.duration);
+    } else if (currentRadio) {
+      setDuration(0);
+    }
+
+    setIsLoading(false);
+  };
 
   return (
     <MusicContext.Provider
       value={{
-        currentCategory,
+        audioPlayer,
         currentRadio,
         currentSong,
+        duration,
         handleIsPlaying,
         handlePlaylistChange,
         handlePreviousNextSong,
@@ -97,6 +145,7 @@ export const MusicProvider = ({ children }) => {
         position,
         radioList,
         repeatOne,
+        setAudioPlayer,
         setIsLoading,
         setIsPlaying,
         setPosition,
