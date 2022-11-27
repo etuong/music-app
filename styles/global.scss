@@ -1,17 +1,25 @@
 .radio-container {
-  min-height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  img {
+  img.desktop {
     width: clamp(30rem, 25vw, 16rem);
     height: clamp(30rem, 25vw, 16rem);
     border-radius: 50%;
     margin: 2rem 0;
   }
+
+  img.mobile {
+    border-radius: 50%;
+    margin: 2rem 0;
+  }
+
   .rotate-animation {
     animation: rotation 6s infinite linear;
+    &.mobile {
+      animation: rotation 8s infinite linear;
+    }
   }
 }
 
@@ -43,7 +51,7 @@ a {
   height: 98vh;
   padding: 1rem;
   max-width: 500px;
-  margin: auto;
+  margin: 10px;
   border-radius: 30px;
   border: 1px solid black;
 

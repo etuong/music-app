@@ -22,6 +22,13 @@ const Mobile = ({ isSafari }) => {
     songs: false,
   });
 
+  const [albumCover, setAlbumCover] = React.useState("");
+
+  React.useEffect(() => {
+    if (isSafari && (currentSong || currentRadio))
+      setAlbumCover(`https://picsum.photos/280?t=${Date.now()}`);
+  }, [currentSong, currentRadio]);
+
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event.type === "keydown" &&
@@ -98,7 +105,17 @@ const Mobile = ({ isSafari }) => {
       </div>
 
       <div style={{ marginTop: "auto", textAlign: "center" }}>
-        {!isSafari && <Spectrum height={300} width={300} />}
+        {isSafari ? (
+          <div className="radio-container">
+            <img
+              src={albumCover}
+              className={"rotate-animation mobile"}
+              alt=""
+            />
+          </div>
+        ) : (
+          <Spectrum height={300} width={300} />
+        )}
       </div>
 
       <div className="info">

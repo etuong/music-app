@@ -23,7 +23,7 @@ const Songs = () => {
       <div className="radio-container">
         <img
           src={`${currentRadio.cover}`}
-          className={"rotate-animation"}
+          className={"rotate-animation desktop"}
           alt=""
         />
       </div>
