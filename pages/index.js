@@ -18,6 +18,7 @@ const MainContainer = styled.div`
 
 export default function App() {
   const [isMobile, setIsMobile] = useState(false);
+  const [isSafari, setIsSafari] = useState(false);
 
   const useIsomorphicLayoutEffect =
     typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -30,15 +31,22 @@ export default function App() {
           )
         : false
     );
+
+    setIsSafari(
+      typeof window !== "undefined"
+        ? navigator.userAgent.indexOf("Safari") > -1 &&
+            navigator.userAgent.indexOf("Chrome") === -1
+        : false
+    );
   }, []);
 
   return isMobile ? (
-    <Mobile />
+    <Mobile isSafari={isSafari} />
   ) : (
     <MainContainer>
       <Playlist />
       <Stack sx={{ width: "100%", marginLeft: "15px" }}>
-        <Controller />
+        <Controller isSafari={isSafari} />
         <Songs />
       </Stack>
     </MainContainer>

@@ -2,7 +2,6 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Control from "./Control";
 import Slider from "@mui/material/Slider";
-import Spectrum from "./Spectrum";
 import Stack from "@mui/material/Stack";
 import TrackSlider from "./TrackSlider";
 import Typography from "@mui/material/Typography";
@@ -12,61 +11,25 @@ import { StyledIconButton } from "./Common";
 import { getSongName } from "../utilities/utils";
 import { memo } from "react";
 import { useMusic } from "../providers/MusicProvider";
+import dynamic from 'next/dynamic'
 
-const Controller = () => {
-  const {
-    currentRadio,
-    currentSong,
-    handlePreviousNextSong,
-    isLoading,
-    repeatOne,
-    setIsPlaying,
-    setIsLoading,
-    setPosition,
-  } = useMusic();
+const Spectrum = dynamic(() => import('./Spectrum'), {
+  ssr: false,
+})
 
-  const [duration, setDuration] = React.useState(0);
+const Controller = ({ isSafari }) => {
+  const { currentRadio, currentSong, isLoading, audioPlayer, setAudioPlayer } =
+    useMusic();
+
   const [volume, setVolume] = React.useState(0.5);
-
-  const audioPlayer = React.useRef();
-
-  const onTimeUpdate = (e) => {
-    if (currentSong) {
-      setPosition(e.target.currentTime);
-    }
-  };
-
-  const onEnded = (e) => {
-    if (currentSong && repeatOne) {
-      setPosition(0);
-      setIsPlaying(true);
-      handleIsPlaying(audioPlayer?.current, true);
-    } else {
-      handlePreviousNextSong(1);
-    }
-  };
-
-  const onCanPlayThrough = (e) => {
-    if (currentSong) {
-      setDuration(audioPlayer?.current?.duration);
-    } else if (currentRadio) {
-      setDuration(0);
-    }
-
-    setIsLoading(false);
-  };
 
   return (
     <Box>
       <audio
         id="audio"
-        crossOrigin="anonymous"
-        ref={audioPlayer}
-        src={currentSong ? currentSong : currentRadio ? currentRadio.src : ""}
         preload="auto"
-        onTimeUpdate={onTimeUpdate}
-        onEnded={onEnded}
-        onCanPlayThrough={onCanPlayThrough}
+        crossOrigin="anonymous"
+        ref={(p) => setAudioPlayer(p)}
       ></audio>
 
       <Box
@@ -95,9 +58,9 @@ const Controller = () => {
           </b>
         </Typography>
 
-        <Control audioPlayer={audioPlayer} />
+        <Control />
 
-        <Spectrum width={100} height={50} />
+        {!isSafari && <Spectrum width={100} height={50} />}
 
         <Stack
           spacing={2}
@@ -109,7 +72,7 @@ const Controller = () => {
             onClick={() => {
               setVolume((oldVolume) => {
                 const newVolume = Math.max(oldVolume - 0.1, 0);
-                audioPlayer.current.volume = newVolume;
+                audioPlayer.volume = newVolume;
                 return newVolume;
               });
             }}
@@ -123,7 +86,7 @@ const Controller = () => {
             max={1}
             step={0.1}
             onChange={(_, value) => {
-              audioPlayer.current.volume = value;
+              audioPlayer.volume = value;
               setVolume(value);
             }}
             sx={{
@@ -149,7 +112,7 @@ const Controller = () => {
             onClick={() => {
               setVolume((oldVolume) => {
                 const newVolume = Math.min(oldVolume + 0.1, 1);
-                audioPlayer.current.volume = newVolume;
+                audioPlayer.volume = newVolume;
                 return newVolume;
               });
             }}
@@ -159,7 +122,7 @@ const Controller = () => {
         </Stack>
       </Box>
 
-      <TrackSlider audioPlayer={audioPlayer} duration={duration} />
+      <TrackSlider />
     </Box>
   );
 };

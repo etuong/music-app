@@ -40,8 +40,12 @@ a {
 .player {
   display: flex;
   flex-direction: column;
-  height: 92vh;
+  height: 98vh;
   padding: 1rem;
+  max-width: 500px;
+  margin: auto;
+  border-radius: 30px;
+  border: 1px solid black;
 
   .header {
     display: flex;

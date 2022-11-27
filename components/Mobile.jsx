@@ -14,51 +14,13 @@ import { getSongName } from "../utilities/utils";
 import { memo } from "react";
 import { useMusic } from "../providers/MusicProvider";
 
-const Mobile = () => {
-  const {
-    currentRadio,
-    currentSong,
-    handleIsPlaying,
-    handlePreviousNextSong,
-    isLoading,
-    repeatOne,
-    setIsLoading,
-    setPosition,
-  } = useMusic();
+const Mobile = ({ isSafari }) => {
+  const { currentRadio, currentSong, isLoading, setAudioPlayer } = useMusic();
 
   const [openDrawer, setOpenDrawer] = React.useState({
     playlist: false,
     songs: false,
   });
-
-  const [duration, setDuration] = React.useState(0);
-
-  const audioPlayer = React.useRef();
-
-  const onTimeUpdate = (e) => {
-    if (currentSong) {
-      setPosition(e.target.currentTime);
-    }
-  };
-
-  const onEnded = (e) => {
-    if (currentSong && repeatOne) {
-      setPosition(0);
-      handleIsPlaying(audioPlayer?.current, true);
-    } else {
-      handlePreviousNextSong(1);
-    }
-  };
-
-  const onCanPlayThrough = (e) => {
-    if (currentSong) {
-      setDuration(audioPlayer?.current?.duration);
-    } else if (currentRadio) {
-      setDuration(0);
-    }
-
-    setIsLoading(false);
-  };
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -79,13 +41,9 @@ const Mobile = () => {
     <main className="player">
       <audio
         id="audio"
-        crossOrigin="anonymous"
-        ref={audioPlayer}
-        src={currentSong ? currentSong : currentRadio ? currentRadio.src : ""}
         preload="auto"
-        onTimeUpdate={onTimeUpdate}
-        onEnded={onEnded}
-        onCanPlayThrough={onCanPlayThrough}
+        crossOrigin="anonymous"
+        ref={(p) => setAudioPlayer(p)}
       ></audio>
 
       <Drawer anchor="left" open={openDrawer["playlist"]} variant="persistent">
@@ -140,7 +98,7 @@ const Mobile = () => {
       </div>
 
       <div style={{ marginTop: "auto", textAlign: "center" }}>
-        <Spectrum height={300} width={300} />
+        {!isSafari && <Spectrum height={300} width={300} />}
       </div>
 
       <div className="info">
@@ -163,9 +121,9 @@ const Mobile = () => {
         </h2>
       </div>
 
-      <TrackSlider audioPlayer={audioPlayer} duration={duration} />
+      <TrackSlider />
 
-      <Control audioPlayer={audioPlayer} />
+      <Control />
     </main>
   );
 };
