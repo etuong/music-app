@@ -26,9 +26,13 @@ const Mobile = ({ isSafari }) => {
   const [albumCover, setAlbumCover] = React.useState("");
 
   React.useEffect(() => {
-    if (isSafari && (currentSong || currentRadio))
+    if (isSafari && currentSong)
       setAlbumCover(`https://picsum.photos/280?t=${Date.now()}`);
-  }, [currentSong, currentRadio]);
+  }, [currentSong]);
+
+  React.useEffect(() => {
+    if (isSafari && currentRadio) setAlbumCover(`${currentRadio.cover}`);
+  }, [currentRadio]);
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (

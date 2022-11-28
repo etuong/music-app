@@ -16,14 +16,15 @@ const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
 }));
 
 const Songs = () => {
-  const { currentRadio, currentSong, handleSongChange, songs } = useMusic();
+  const { currentRadio, currentSong, isPlaying, handleSongChange, songs } =
+    useMusic();
 
   if (currentRadio) {
     return (
       <div className="radio-container">
         <img
           src={`${currentRadio.cover}`}
-          className={"rotate-animation desktop"}
+          className={`rotate-animation ${isPlaying ? "" : "pause"} desktop`}
           alt=""
         />
       </div>
