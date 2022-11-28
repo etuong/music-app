@@ -10,7 +10,7 @@ Desktop view
 
 ![Desktop](./screenshots/desktop.jpg)
 
-Movile view on Safari and Chrome
+Mobile view on Safari and Chrome
 
 <p float="left">
     <img src="screenshots/mobile-safari.png" height="400">
@@ -44,6 +44,7 @@ This web app supports radio stations and custom playlists. The playlists are par
        -> song5
    ...
    ```
+1. You should also considering using a CDN. I would suggest Cloudfront because it works really well with S3 especially when it comes to security policies. Amazon CloudFront is a global content delivery network (CDN) service that securely delivers data, videos, applications, and APIs to your viewers with low latency and high transfer speeds.
 
 ## 🔧 Technologies
 
