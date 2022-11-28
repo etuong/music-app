@@ -12,8 +12,10 @@ Desktop view
 
 Movile view on Safari and Chrome
 
-<img src="screenshots/mobile-safari.png" height="400">
-<img src="screenshots/mobile-chrome.jpg" height="400">
+<p float="left">
+    <img src="screenshots/mobile-safari.png" height="400">
+    <img src="screenshots/mobile-chrome.jpg" height="400">
+</p>
 
 ## 🔨 Installation
 
