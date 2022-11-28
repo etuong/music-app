@@ -20,6 +20,9 @@
     &.mobile {
       animation: rotation 8s infinite linear;
     }
+    &.pause {
+      animation-play-state: paused;
+    }
   }
 }
 

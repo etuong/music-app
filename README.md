@@ -8,11 +8,12 @@ Play your favorite songs and radio stations all in one app!
 
 Desktop view
 
-![Desktop](./screenshot-desktop.jpg)
+![Desktop](./screenshots/desktop.jpg)
 
-Movile view
+Movile view on Safari and Chrome
 
-<img src="screenshot-mobile.jpg" height="450">
+<img src="screenshots/mobile-safari.png" height="400">
+<img src="screenshots/mobile-chrome.jpg" height="400">
 
 ## 🔨 Installation
 

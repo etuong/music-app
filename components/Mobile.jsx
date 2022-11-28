@@ -15,7 +15,8 @@ import { memo } from "react";
 import { useMusic } from "../providers/MusicProvider";
 
 const Mobile = ({ isSafari }) => {
-  const { currentRadio, currentSong, isLoading, setAudioPlayer } = useMusic();
+  const { currentRadio, currentSong, isLoading, isPlaying, setAudioPlayer } =
+    useMusic();
 
   const [openDrawer, setOpenDrawer] = React.useState({
     playlist: false,
@@ -109,7 +110,7 @@ const Mobile = ({ isSafari }) => {
           <div className="radio-container">
             <img
               src={albumCover}
-              className={"rotate-animation mobile"}
+              className={`rotate-animation ${isPlaying ? "" : "pause"} mobile`}
               alt=""
             />
           </div>
