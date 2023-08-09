@@ -11,11 +11,11 @@ import { StyledIconButton } from "./Common";
 import { getSongName } from "../utilities/utils";
 import { memo } from "react";
 import { useMusic } from "../providers/MusicProvider";
-import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic";
 
-const Spectrum = dynamic(() => import('./Spectrum'), {
+const Spectrum = dynamic(() => import("./Spectrum"), {
   ssr: false,
-})
+});
 
 const Controller = ({ isSafari }) => {
   const { currentRadio, currentSong, isLoading, audioPlayer, setAudioPlayer } =
