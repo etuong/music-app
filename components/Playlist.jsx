@@ -44,7 +44,7 @@ const Playlist = () => {
 
   return (
     <Box sx={{ minWidth: 250, overflow: "auto", height: "100%" }}>
-      <Title>Today's Demo</Title>
+      <Title>Ethan's Playlists</Title>
       <Divider />
 
       <List
