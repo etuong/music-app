@@ -27,15 +27,15 @@ export default function App() {
     setIsMobile(
       typeof window !== "undefined"
         ? navigator.userAgent.match(
-            /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
-          )
+          /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+        )
         : false
     );
 
     setIsSafari(
       typeof window !== "undefined"
         ? navigator.userAgent.indexOf("Safari") > -1 &&
-            navigator.userAgent.indexOf("Chrome") === -1
+        navigator.userAgent.indexOf("Chrome") === -1
         : false
     );
   }, []);
