@@ -4,9 +4,9 @@ import Playlist from "../components/Playlist";
 import Songs from "../components/Songs";
 import Stack from "@mui/material/Stack";
 import styled from "@emotion/styled";
-import { useLayoutEffect, useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 
-const MainContainer = styled.div`
+const AppContainer = styled.div`
   display: flex;
   padding: 1.5%;
   height: 98vh;
@@ -16,39 +16,37 @@ const MainContainer = styled.div`
   border: 2px solid rgb(223, 223, 223);
 `;
 
-export default function App() {
-  const [isMobile, setIsMobile] = useState(false);
-  const [isSafari, setIsSafari] = useState(false);
+const App = () => {
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
+  const [isSafariBrowser, setIsSafariBrowser] = useState(false);
 
-  const useIsomorphicLayoutEffect =
-    typeof window !== "undefined" ? useLayoutEffect : useEffect;
-
-  useIsomorphicLayoutEffect(() => {
-    setIsMobile(
-      typeof window !== "undefined"
-        ? navigator.userAgent.match(
-          /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
-        )
-        : false
+  useLayoutEffect(() => {
+    setIsMobileDevice(
+      typeof window !== "undefined" &&
+      navigator.userAgent.match(
+        /Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile|WPDesktop/i
+      )
     );
 
-    setIsSafari(
-      typeof window !== "undefined"
-        ? navigator.userAgent.indexOf("Safari") > -1 &&
-        navigator.userAgent.indexOf("Chrome") === -1
-        : false
+    setIsSafariBrowser(
+      typeof window !== "undefined" &&
+      navigator.userAgent.indexOf("Safari") > -1 &&
+      navigator.userAgent.indexOf("Chrome") === -1
     );
   }, []);
 
-  return isMobile ? (
-    <Mobile isSafari={isSafari} />
+  return isMobileDevice ? (
+    <Mobile isSafariBrowser={isSafariBrowser} />
   ) : (
-    <MainContainer>
+    <AppContainer>
       <Playlist />
       <Stack sx={{ width: "100%", marginLeft: "15px" }}>
-        <Controller isSafari={isSafari} />
+        <Controller isSafariBrowser={isSafariBrowser} />
         <Songs />
       </Stack>
-    </MainContainer>
+    </AppContainer>
   );
-}
+};
+
+export default App;
+

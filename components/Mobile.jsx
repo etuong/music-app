@@ -151,3 +151,4 @@ const Mobile = ({ isSafari }) => {
 };
 
 export default memo(Mobile);
+

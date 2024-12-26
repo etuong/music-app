@@ -7,7 +7,6 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { getSongNameWithExt } from "../utilities/utils";
-import { memo } from "react";
 import { useMusic } from "../providers/MusicProvider";
 import { styled } from "@mui/material/styles";
 
@@ -15,8 +14,8 @@ const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
   backgroundColor: "rgba(255,255,255,0.3)",
 }));
 
-const Songs = () => {
-  const { currentRadio, currentSong, isPlaying, handleSongChange, songs } =
+const SongList = () => {
+  const { currentSong, currentRadio, isPlaying, handleSongChange, songs } =
     useMusic();
 
   if (currentRadio) {
@@ -33,24 +32,24 @@ const Songs = () => {
 
   return (
     <StyledTableContainer component={Paper} sx={{ height: "100%" }}>
-      <Table stickyHeader size="small" aria-label="simple table">
+      <Table stickyHeader size="small" aria-label="song list">
         <TableHead>
           <TableRow>
             <TableCell>Title</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {songs?.map((row, index) => (
+          {songs?.map((song, index) => (
             <TableRow
               key={index}
               onDoubleClick={() => handleSongChange(index)}
-              selected={getSongNameWithExt(currentSong) === row}
+              selected={getSongNameWithExt(currentSong) === song}
               sx={{
                 "&:last-child td, &:last-child th": { border: 0 },
                 cursor: "default",
               }}
             >
-              <TableCell sx={{ userSelect: "none" }}>{row}</TableCell>
+              <TableCell sx={{ userSelect: "none" }}>{song}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -59,4 +58,5 @@ const Songs = () => {
   );
 };
 
-export default memo(Songs);
+export default SongList;
+

@@ -30,7 +30,7 @@ const Controller = ({ isSafari }) => {
         preload="auto"
         crossOrigin="anonymous"
         ref={(p) => setAudioPlayer(p)}
-      ></audio>
+      />
 
       <Box
         sx={{

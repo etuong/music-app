@@ -7,22 +7,11 @@ import { memo } from "react";
 import { useMusic } from "../providers/MusicProvider";
 
 const TrackSlider = () => {
-  const {
-    currentRadio,
-    currentSong,
-    duration,
-    handleIsPlaying,
-    setIsLoading,
-    audioPlayer,
-    setPosition,
-    position,
-  } = useMusic();
+  const { currentRadio, currentSong, duration, handleIsPlaying, setIsLoading, audioPlayer, setPosition, position } = useMusic();
 
   React.useEffect(() => {
     if (currentSong) {
-      setTimeout(() => {
-        handleIsPlaying(true);
-      }, 600);
+      setTimeout(() => handleIsPlaying(true), 600);
     } else {
       handleIsPlaying(false);
     }
@@ -40,20 +29,18 @@ const TrackSlider = () => {
     }
   }, [currentRadio]);
 
-  const disableControl = currentRadio !== undefined;
+  const isDisabled = currentRadio !== undefined;
 
   return (
     <Box>
       <Slider
         aria-label="time-indicator"
-        disabled={disableControl}
+        disabled={isDisabled}
         value={position}
         min={0}
         step={1}
         max={duration || 0}
-        onChange={(_, value) => {
-          audioPlayer.currentTime = value;
-        }}
+        onChange={(_, value) => audioPlayer.currentTime = value}
         sx={{
           height: 6,
           color: "#3F7089",
@@ -93,3 +80,4 @@ const TrackSlider = () => {
 };
 
 export default memo(TrackSlider);
+
